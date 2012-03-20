@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+	<setting id="remember_dir" type="bool" label="前次目录记忆" default="true"/>
+	<setting type="sep"/>
+	<setting id="movie_type" type="text" label="电影类型" default="全部" enable="false"/>
+	<setting id="movie_area" type="text" label="电影地区" default="全部" enable="false"/>
+	<setting id="order" type="text" label="排序方式" default="最新" enable="false"/>
+	<setting id="channel" type="text" label="节目分类" default="电影" enable="false"/>
+	<setting id="page" type="text" label="当前页" default="1" enable="false"/>
+</settings>

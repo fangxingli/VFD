@@ -1,0 +1,679 @@
+Exception RuntimeError: 'maximum recursion depth exceeded while calling a Python object' in <type 'exceptions.AttributeError'> ignored
+Traceback (most recent call last):
+  File "qqtv.py", line 503, in <module>
+    decode('plugin.video.tencent')
+  File "qqtv.py", line 487, in decode
+    return getRootMenu()
+  File "qqtv.py", line 93, in getRootMenu
+    decode(t.endOfDirectory(int(argv[1])))
+  File "qqtv.py", line 489, in decode
+    return progList(name,type,page,cat,area,year,order)
+  File "qqtv.py", line 198, in progList
+    decode(t.endOfDirectory(int(argv[1])))
+  File "qqtv.py", line 500, in decode
+    return PlayVideo(name,type,url,thumb)
+  File "qqtv.py", line 274, in PlayVideo
+    media.printMediaInfo()
+  File "/home/lifangxing/pptv_h3/util.py", line 63, in printMediaInfo
+    for k,v in self.infos.iteritems():
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+  File "/home/lifangxing/pptv_h3/util.py", line 72, in __getattr__
+    if func[3:] not in self.infos or func.find('get') != 0:
+RuntimeError: maximum recursion depth exceeded
