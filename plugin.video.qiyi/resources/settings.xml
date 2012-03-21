@@ -1,10 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-	<setting id="remember_dir" type="bool" label="前次目录记忆" default="true"/>
+<?xml version="1.0" ?><settings>
+	<setting default="true" id="remember_dir" label="前次目录记忆" type="bool"/>
 	<setting type="sep"/>
-	<setting id="movie_type" type="text" label="电影类型" default="全部" enable="false"/>
-	<setting id="movie_area" type="text" label="电影地区" default="全部" enable="false"/>
-	<setting id="order" type="text" label="排序方式" default="最新" enable="false"/>
-	<setting id="channel" type="text" label="节目分类" default="电影" enable="false"/>
-	<setting id="page" type="text" label="当前页" default="1" enable="false"/>
+	<setting default="全部" enable="false" id="movie_type" label="电影类型" type="text"/>
+	<setting default="日本" enable="false" id="movie_area" label="电影地区" type="text"/>
+	<setting default="热播" enable="false" id="order" label="排序方式" type="text"/>
+	<setting default="动漫" enable="false" id="channel" label="节目分类" type="text"/>
+	<setting default="1" enable="false" id="page" label="当前页" type="text"/>
 </settings>

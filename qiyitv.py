@@ -106,6 +106,7 @@ def progList():
 	page = __addon__.getSetting('page')
 	currpage = int(page)
 	channel = __addon__.getSetting('channel')
+	print '----------------> ' + str(channel)
 	id = CHANNEL_DICT[channel]
 	movie_area = __addon__.getSetting('movie_area')
 	if id == '7':
@@ -364,7 +365,7 @@ def performChanges():
 
     if change:
         if __addon__.getSetting('remember_dir') == "true":
-            return rootList()
+            return progList()
 
 def get_params(code):
     parts = code.split('?')

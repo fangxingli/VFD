@@ -396,18 +396,23 @@ class Addon(object):
 		return self.__id	
 
 	def getSetting(self,id):
+		f = open(self.cfg_path, 'r')
 		dom = minidom.parse(self.cfg_path)
 		root = dom.documentElement
 		for i in root.getElementsByTagName('setting'): 
 			if i.getAttribute('id') == id:
 				return i.getAttribute('default').encode('utf8')
+		f.close()
 
 	def setSetting(self, id, value):
-		dom = minidom.parse(self.cfg_path)
+		f = open(self.cfg_path, 'rwb')
+		dom = minidom.parse(f)
 		root = dom.documentElement
-		for i in root.getElementsByTagName('settings'):
+		for i in root.getElementsByTagName('setting'):
 			if i.getAttribute('id') == id:
-				i.setAttribute('default', value)
+				i.setAttribute('default', value.decode('utf8'))
+		open(self.cfg_path,'w').write(dom.toxml().encode('utf8'))
+		f.close()
 
 # For Test
 class Player(object):
