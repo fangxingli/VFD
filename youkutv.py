@@ -53,6 +53,8 @@ def getList2(listpage, cat):
 def getRootMenu():
     t = util.Menu()
     link = GetHttpData('http://www.youku.com/v/')
+    if link == None:
+        return None
     match0 = re.compile('<div class="left">(.+?)<!--left end-->', re.DOTALL).search(link)
     match = re.compile('<li><a href="/([^/]+)/([^\.]+)\.html"[^>]+>(.+?)</a></li>').findall(match0.group(1))
     totalItems = len(match)
@@ -92,6 +94,8 @@ def progList(name,id,page,cat,area,year,order):
         currpage = 1
     url += '.html'
     link = GetHttpData(url)
+    if link == None:
+        return None
     match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
     if len(match):
         match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
@@ -208,7 +212,10 @@ def fakeProgList(name, url, thumb, res):
 	t = util.Menu()
 	li = util.MenuItem(name)
 	# mode:10 is PlayVideo
-	li.bindMedia( showMediaInfo(GetHttpData(url)) )
+	link = GetHttpData(url)
+	if link == None:
+		return None
+	li.bindMedia( showMediaInfo(link) )
 	u = encode(mode=10, name=name, url=url, thumb=thumb, res=str(res))
 	t.addDirectoryItem(int(argv[1]), u, li)
 	# Test
@@ -220,6 +227,9 @@ def fakeProgList(name, url, thumb, res):
 def getMovie(name,id,thumb,res):
     if len(id)==21:
         link = GetHttpData('http://www.youku.com/show_page/id_' + id + '.html')
+        if link == None:
+            return None
+		
         match = re.compile('<div class="showbanner">.+?href="(http://v.youku.com/v_show/id_.+?.html)"', re.DOTALL).search(link)
         if match:
             return fakeProgList(name, match.group(1), thumb, res)
@@ -234,6 +244,8 @@ def seriesList(name,id,thumb,page):
     print url
     currpage = int(page)
     link = GetHttpData(url)
+    if link == None:
+        return None
     match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
     if len(match):
         match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
@@ -257,7 +269,10 @@ def seriesList(name,id,thumb,page):
             p_url = match1.group(1)
             ''' Media Infomation get in here , and make sure run here once'''
             if media is None:
-                media = showMediaInfo(GetHttpData(p_url), media)
+                link = GetHttpData(p_url)
+                if link == None:
+                    return None
+                media = showMediaInfo(link, media)
         else:
             continue
         match1 = re.compile('<li class="v_thumb"><img src="(.+?)"').search(match[i])
@@ -303,6 +318,8 @@ def progList2(name,id,page,cat,year,order):
         currpage = 1
     url += '.html'
     link = GetHttpData(url)
+    if link == None:
+        return None	
     match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
     if len(match):
         match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
@@ -369,6 +386,8 @@ def PlayVideo(name,url,thumb,res):
     if res > res_limit:
         res = res_limit
     link = GetHttpData("http://www.flvcd.com/parse.php?kw="+url+"&format="+RES_LIST[res])
+    if link == None:
+        return None
     match = re.compile('"(http://f.youku.com/player/getFlvPath/.+?)" target="_blank"').findall(link)
     if len(match)>0:
         playlist=util.PlayList(1)

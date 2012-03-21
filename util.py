@@ -476,19 +476,23 @@ def translatePath(path):
 	pass	
 
 def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'):
-    print '------------------------------> ' + url 
-    req = urllib2.Request(url)
-    req.add_header('User-Agent', UserAgent)
-    response = urllib2.urlopen(req)
-    httpdata = response.read()
-    if response.headers.get('content-encoding', None) == 'gzip':
-        httpdata = gzip.GzipFile(fileobj=StringIO.StringIO(httpdata)).read()
-    response.close()
-    match = re.compile('<meta http-equiv="[Cc]ontent-[Tt]ype" content="text/html; charset=(.+?)"').findall(httpdata)
-    if len(match)<=0:
-        match = re.compile('meta charset="(.+?)"').findall(httpdata)
-    if len(match)>0:
-        charset = match[0].lower()
-        if (charset != 'utf-8') and (charset != 'utf8'):
-            httpdata = httpdata.decode(charset, 'ignore').encode('utf8', 'ignore')
-    return httpdata
+	print '------------------------------> ' + url 
+	req = urllib2.Request(url)
+	req.add_header('User-Agent', UserAgent)
+	try:
+		response = urllib2.urlopen(req, timeout=3)
+	except urllib2.URLError, e:
+		print e
+		return None	
+	httpdata = response.read()
+	if response.headers.get('content-encoding', None) == 'gzip':
+		httpdata = gzip.GzipFile(fileobj=StringIO.StringIO(httpdata)).read()
+	response.close()
+	match = re.compile('<meta http-equiv="[Cc]ontent-[Tt]ype" content="text/html; charset=(.+?)"').findall(httpdata)
+	if len(match)<=0:
+		match = re.compile('meta charset="(.+?)"').findall(httpdata)
+	if len(match)>0:
+		charset = match[0].lower()
+		if (charset != 'utf-8') and (charset != 'utf8'):
+			httpdata = httpdata.decode(charset, 'ignore').encode('utf8', 'ignore')
+	return httpdata
