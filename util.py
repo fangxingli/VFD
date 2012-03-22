@@ -354,6 +354,7 @@ class Menu(object):
 		for i in range(len(self.items)):
 			print self.items[i].getName() + ' <=> ' + str(name)
 			if self.items[i].getName() == name:
+				print '-----------------------------<<<<<<<<<<<<<' + str(self.params[i])
 				return self.params[i]
 		raise IndexError, "Item %s does not exists" % str(name)
 
@@ -362,7 +363,7 @@ class Menu(object):
 		""" GDB """
 		for i in range(len(self.items)):
 			print '[%2d] %s' %(i+1, self.items[i].getName())
-		f = io.open('/dev/stdin', 'r')
+		f = io.open('/proc/self/fd/0', 'r')
 		print 'Select item: '
 		getin = f.readline()	
 		if getin.strip() == 'q':
@@ -475,11 +476,13 @@ class Dialog(object):
 def translatePath(path):
 	pass	
 
-def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'):
+def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3', gdb=False):
 	print '------------------------------> ' + url 
 	
 	def simple_gdb(s,gdb_file = "/hdisk/modules/qqtv_dbg_log.txt" ):
-		os.system('echo "%s" >> %s' % (s,gdb_file))
+		if gdb == True:
+			os.system('echo "%s" >> %s' % (s,gdb_file))
+		pass
 		
 	simple_gdb("enter GetHttpData")
 	req = urllib2.Request(url)
