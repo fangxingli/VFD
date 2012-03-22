@@ -193,7 +193,6 @@ def listA(name,url,thumb):
             li = util.MenuItem(p_name, iconImage = '', thumbnailImage = thumb)
             li.bindMedia(media)
             u = argv[0] + "?mode=10&name="+urllib.quote_plus(p_name)+"&type=3&url="+urllib.quote_plus(p_url)+"&thumb="+urllib.quote_plus(thumb)
-            #li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Genre":p_genre, "Plot":p_plot, "Year":p_year, "Cast":p_cast, "Tagline":p_tagline})
             t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
     else:
         match = re.compile('</i><a target="_self".+?title="(.+?)".+?sv="(.+?)"', re.DOTALL).findall(link)
@@ -202,11 +201,10 @@ def listA(name,url,thumb):
             li = util.MenuItem(p_name, iconImage = '', thumbnailImage = thumb)
             li.bindMedia(media)
             u = argv[0] + "?mode=10&name="+urllib.quote_plus(p_name)+"&type=3&url="+urllib.quote_plus(p_url)+"&thumb="+urllib.quote_plus(thumb)
-            #li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Genre":p_genre, "Plot":p_plot, "Year":p_year, "Cast":p_cast, "Tagline":p_tagline})
             t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
     t.setContent(int(argv[1]), 'movies')
 	# For Test
-#    media.printMediaInfo()
+    #media.printMediaInfo()
     #decode(t.endOfDirectory(int(argv[1])))
 	#end
     return t

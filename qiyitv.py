@@ -40,24 +40,24 @@ MOVIE_TYPE_LIST['9'] = [['全部',''],['风光','354'],['饮食','355'],['出行
 MOVIE_AREA_LIST['9'] = [['全部',''],['安徽','599'],['北京','576'],['河南','607'],['湖南','611'],['江苏','595'],['辽宁','589'],['西藏','625'],['埃及','567'],['澳大利亚','559'],['法国','520'],['马尔代夫','460'],['日本','426'],['新西兰','380'],['意大利','371'],]
 
 def GetHttpData(url):
-    try:
-        print "GetHttpData %s " % url 
-        req = urllib2.Request(url)
-        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-        response = urllib2.urlopen(req)
-        httpdata = response.read()
-        response.close()
-        httpdata = re.sub("\s", "", httpdata)
-        return httpdata
-    except:
-        return ""
+	try:
+		print "GetHttpData %s " % url 
+		req = urllib2.Request(url)
+		req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+		response = urllib2.urlopen(req, timeout=3)
+		httpdata = response.read()
+		response.close()
+		httpdata = re.sub("\s", "", httpdata)
+		return httpdata
+	except urllib2.URLError, e:
+		return None
 
 def encode(**args):
     return argv[0] + "?" + '&'.join([ "%s=%s"%(x,urllib.quote_plus(str(args[x]))) for x in args ])
 
 def urlExists(url):
     try:
-        resp = urllib2.urlopen(url)
+        resp = urllib2.urlopen(url, timeout=3)
         result = True
         resp.close()
     except urllib2.URLError, e:
@@ -166,6 +166,10 @@ def progList():
 		else:
 			p_rating = float(match[i][4] + match[i][5])
 			p_votes = match[i][6]
+		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+		u = encode(mode=6, name=p_name, url=p_url, thumb=p_thumb)
+		t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
+		'''
 		link = GetHttpData(p_url)
 		v_url = getPlayURL(link)
 		if v_url != '':
@@ -189,7 +193,8 @@ def progList():
 			else:
 				p_plot = match1[0]
 			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-			u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(v_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
+			#u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(v_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
+			u = encode(mode=2, name=p_name, url=v_url, thumb=p_thumb)
 			li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year, "Rating":p_rating, "Votes":p_votes})
 			t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
 		else:
@@ -213,24 +218,86 @@ def progList():
 			else:
 				p_plot = match1[0]
 			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-			u = argv[0] + "?mode=3&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
+			#u = argv[0] + "?mode=3&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
+			u = encode(mode=3, name=p_name, url=p_url, thumb=p_thumb)
 			li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year, "Rating":p_rating, "Votes":p_votes})
 			t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
+			'''
 
 	if currpage > 1:
 		li = util.MenuItem('上一页（第'+page+'页/共'+str(totalpages)+'页）')
-		u = argv[0] + "?mode=1&page=" + urllib.quote_plus(str(currpage - 1))
-		t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
+		u = encode(mode=1, page=str(currpage-1))
+		t.addPageItem(u, li)
 	if currpage < totalpages:
 		li = util.MenuItem('下一页（第'+page+'页/共'+str(totalpages)+'页）')
-		u = argv[0] + "?mode=1&page=" + urllib.quote_plus(str(currpage + 1))
-		t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
+		u = encode(mode=1, page=str(currpage-1))
+		t.addPageItem(u, li)
 	t.setContent(int(argv[1]), 'movies')
 
 	# Test
 	decode(t.endOfDirectory(int(argv[1])))
 	# end
 	return t
+
+def fakeProgList(p_name, url, p_thumb):
+	link = GetHttpData(url)
+	v_url = getPlayURL(link)
+	if v_url != '':
+		t = util.Menu()
+		# 能够获取播放页面，为单个视频
+		match1 = re.compile('上映年份：<ahref=".*?">([0-9]*)').findall(link)
+		if len(match1) == 0:
+			match1 = re.compile('出品年份：<!--.*?-->([0-9]*)').findall(link)
+		if len(match1) == 0:
+			p_year = 0
+		else:
+			p_year = int(match1[0])
+		match1 = re.compile('导演：<ahref=".*?">(.*?)</a>').findall(link)
+		if len(match1) == 0:
+			p_director = ''
+		else:
+			p_director = match1[0]
+		p_cast = re.compile('class="f14">(.*?)</a>饰演<spanclass="f14">(.*?)</span>').findall(link)
+		match1 = re.compile('<pid="desc1".*?>(.*?)</p>').findall(link)
+		if len(match1) == 0:
+			p_plot = ''
+		else:
+			p_plot = match1[0]
+		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+		u = encode(mode=2, name=p_name, url=v_url, thumb=p_thumb)
+		t.addDirectoryItem(int(argv[1]), u, li, False)
+
+		# Test
+		decode(t.endOfDirectory(int(argv[1])))
+		# end
+		return t
+	else:
+		# 无法获取播放页面，为剧集
+		match1 = re.compile('年份：<ahref=".*?">([0-9]*)').findall(link)
+		if len(match1) == 0:
+			match1 = re.compile('出品年份：([0-9]*)').findall(link)
+		if len(match1) == 0:
+			p_year = 0
+		else:
+			p_year = int(match1[0])
+		match1 = re.compile('导演：<ahref=".*?">(.*?)</a>').findall(link)
+		if len(match1) == 0:
+			p_director = ''
+		else:
+			p_director = match1[0]
+		p_cast = re.compile('class="f14">(.*?)</a>饰演<spanclass="f14">(.*?)</span>').findall(link)
+		match1 = re.compile('<pclass="zhuanjiP2">(.*?)</p>').findall(link)
+		if len(match1) == 0:
+			p_plot = ''
+		else:
+			p_plot = match1[0]
+		return seriesList(p_name, url, p_thumb)
+		'''
+		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+		u = encode(mode=3, name=p_name, url=url, thumb=p_thumb)
+		li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year, "Rating":p_rating, "Votes":p_votes})
+		t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
+		'''
 
 def seriesList(url, name, thumb):
     t = util.Menu()
@@ -442,6 +509,8 @@ def decode(code):
 		return performChannel(channel)
 	elif mode == 5:
 		return performChanges()
+	elif mode == 6:
+		return fakeProgList(name, url, thumb)
 
 if __name__ == '__main__':
 	decode(__addonid__)

@@ -367,10 +367,10 @@ class Menu(object):
 		getin = f.readline()	
 		if getin.strip() == 'q':
 			exit(0)
-		elif getin.strip() == 'n':
-			return self.selectItem('下一页')
 		elif getin.strip() == 'p':
-			return self.selectItem('上一页')
+			return self.selectItem(self.page_items.keys()[0])
+		elif getin.strip() == 'n':
+			return self.selectItem(self.page_items.keys()[1])
 		elif getin.strip() == 's':
 			return self.enableCategorization()
 		else:
@@ -477,14 +477,24 @@ def translatePath(path):
 
 def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'):
 	print '------------------------------> ' + url 
+	
+	def simple_gdb(s,gdb_file = "/hdisk/modules/qqtv_dbg_log.txt" ):
+		os.system('echo "%s" >> %s' % (s,gdb_file))
+		
+	simple_gdb("enter GetHttpData")
 	req = urllib2.Request(url)
+	simple_gdb("Request url")
 	req.add_header('User-Agent', UserAgent)
+	simple_gdb("add_header")
 	try:
+		simple_gdb("try: urllib2.urlopen(req, timeout=3)")
 		response = urllib2.urlopen(req, timeout=3)
 	except urllib2.URLError, e:
-		print e
+		simple_gdb(str(e))
 		return None	
+	simple_gdb("urlopen complete")
 	httpdata = response.read()
+	simple_gdb("response.read() complete")
 	if response.headers.get('content-encoding', None) == 'gzip':
 		httpdata = gzip.GzipFile(fileobj=StringIO.StringIO(httpdata)).read()
 	response.close()
@@ -495,4 +505,5 @@ def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB
 		charset = match[0].lower()
 		if (charset != 'utf-8') and (charset != 'utf8'):
 			httpdata = httpdata.decode(charset, 'ignore').encode('utf8', 'ignore')
+	simple_gdb("GetHttpData complete, exists GetHttpData")
 	return httpdata
