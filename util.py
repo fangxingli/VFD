@@ -368,9 +368,9 @@ class Menu(object):
 		if getin.strip() == 'q':
 			exit(0)
 		elif getin.strip() == 'p':
-			return self.selectItem(self.page_items.keys()[0])
+			return self.selectItem('上一页')
 		elif getin.strip() == 'n':
-			return self.selectItem(self.page_items.keys()[1])
+			return self.selectItem('下一页')
 		elif getin.strip() == 's':
 			return self.enableCategorization()
 		else:
@@ -405,13 +405,13 @@ class Addon(object):
 		f.close()
 
 	def setSetting(self, id, value):
-		f = open(self.cfg_path, 'rwb')
+		f = open(self.cfg_path, 'r')
 		dom = minidom.parse(f)
 		root = dom.documentElement
 		for i in root.getElementsByTagName('setting'):
 			if i.getAttribute('id') == id:
 				i.setAttribute('default', value.decode('utf8'))
-		open(self.cfg_path,'w').write(dom.toxml().encode('utf8'))
+		open(self.cfg_path,'wb').write(dom.toxml().encode('utf8'))
 		f.close()
 
 # For Test

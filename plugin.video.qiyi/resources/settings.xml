@@ -4,6 +4,6 @@
 	<setting default="全部" enable="false" id="movie_type" label="电影类型" type="text"/>
 	<setting default="全部" enable="false" id="movie_area" label="电影地区" type="text"/>
 	<setting default="最新" enable="false" id="order" label="排序方式" type="text"/>
-	<setting default="电影" enable="false" id="channel" label="节目分类" type="text"/>
+	<setting default="纪录片" enable="false" id="channel" label="节目分类" type="text"/>
 	<setting default="1" enable="false" id="page" label="当前页" type="text"/>
 </settings>

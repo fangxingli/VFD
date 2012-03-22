@@ -144,15 +144,18 @@ def progList():
 	if currpage < totalpages: totalItems = totalItems + 1
 
 	'''
-	筛选分类
+	节目分类
 	li = util.MenuItem('节目分类[COLOR FF00FF00]【' + channel + '】[/COLOR]（按此选择）')
 	u = argv[0] + "?mode=4"
 	t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
 	'''
 
+	'''
+	筛选分类
 	li = util.MenuItem('类型[COLOR FFFF0000]【' + movie_type + '】[/COLOR] 地区[COLOR FFFF0000]【' + movie_area + '】[/COLOR] 排序[COLOR FFFF0000]【' + order + '】[/COLOR]（按此选择）')
 	u = argv[0] + "?mode=5"
 	t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
+	'''
 
 	for i in range(0,len(match)):
 		p_url = match[i][0]
@@ -225,12 +228,15 @@ def progList():
 			'''
 
 	if currpage > 1:
-		li = util.MenuItem('上一页（第'+page+'页/共'+str(totalpages)+'页）')
+		#li = util.MenuItem('上一页（第'+page+'页/共'+str(totalpages)+'页）')
+		li = util.MenuItem('上一页')
 		u = encode(mode=1, page=str(currpage-1))
 		t.addPageItem(u, li)
 	if currpage < totalpages:
-		li = util.MenuItem('下一页（第'+page+'页/共'+str(totalpages)+'页）')
-		u = encode(mode=1, page=str(currpage-1))
+		#li = util.MenuItem('下一页（第'+page+'页/共'+str(totalpages)+'页）')
+		li = util.MenuItem('下一页')
+		u = encode(mode=1, page=str(currpage+1))
+		print '==========================> ' + str(page)
 		t.addPageItem(u, li)
 	t.setContent(int(argv[1]), 'movies')
 
@@ -264,6 +270,7 @@ def fakeProgList(p_name, url, p_thumb):
 		else:
 			p_plot = match1[0]
 		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+		li.bindMedia(util.Media())
 		u = encode(mode=2, name=p_name, url=v_url, thumb=p_thumb)
 		t.addDirectoryItem(int(argv[1]), u, li, False)
 
@@ -291,7 +298,7 @@ def fakeProgList(p_name, url, p_thumb):
 			p_plot = ''
 		else:
 			p_plot = match1[0]
-		return seriesList(p_name, url, p_thumb)
+		return seriesList(url, p_name, p_thumb)
 		'''
 		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
 		u = encode(mode=3, name=p_name, url=url, thumb=p_thumb)
@@ -300,67 +307,69 @@ def fakeProgList(p_name, url, p_thumb):
 		'''
 
 def seriesList(url, name, thumb):
-    t = util.Menu()
-    link = GetHttpData(url)
-    match1 = re.compile('年份：<ahref=".*?">([0-9]*)').findall(link)
-    if len(match1) == 0:
-        match1 = re.compile('出品年份：([0-9]*)').findall(link)
-    if len(match1) == 0:
-        p_year = 0
-    else:
-        p_year = int(match1[0])
-    match1 = re.compile('导演：<ahref=".*?">(.*?)</a>').findall(link)
-    if len(match1) == 0:
-        p_director = ''
-    else:
-        p_director = match1[0]
-    p_cast = re.compile('class="f14">(.*?)</a>饰演<spanclass="f14">(.*?)</span>').findall(link)
-#    match1 = re.compile('<divid="j-album-[^>]*>(.*?)</div>').findall(link)
-    match1 = re.compile('<divid="j-album-[0-9]+[^>]*>(.*?)</div>').findall(link)
-    album = ''
-    for url1 in match1:
-        album = album + GetHttpData('http://www.qiyi.com' + url1)
-    match2 = re.compile('<divid="j-desc-[0-9]+[^>]*>(.*?)</div>').findall(link)
-    desc = ''
-    for url1 in match2:
-        desc = desc + GetHttpData('http://www.qiyi.com' + url1)
-#    match = re.compile('<li><ahref="(.+?)"class="imgBg1"><.+?src="(.+?)"title="(.+?)".*?"').findall(album)
-    match = re.compile('<li><ahref="(.+?)"class="a_bar"><.+?data-lazy="(.+?)"title="(.+?)"').findall(album)
-    totalItems = len(match)
-    if totalItems==0:
-        match1 = re.compile('"tvPictureUrl":"(.+?)","producers').findall(link)
-        p_thumb=match1[0]
-        match = re.compile('<ahref="(.+?)">(.+?)</a>').findall(album)
-        totalItems = len(match) 
-        for p_url,p_name in match:
-            match1 = re.compile('<ahref="' + p_url + '">' + p_name + '</a></span><pstyle=.*?>(.*?)</p>').findall(desc)
-            if len(match1) > 0:
-                p_plot = match1[0].replace('&nbsp;','')
-            else:
-                p_plot = ''
-            p_name =  name + '(' + p_name + ')'
-            li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-            li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year})
-            u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
-            t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-    else:
-        for p_url, p_thumb, p_name in match:
-#            match1 = re.compile('<ahref="' + p_url + '">' + p_name + '</a></span><pstyle=.*?>(.*?)</p>').findall(desc)
-            match1 = re.compile('<ahref="' + p_url + '">' + p_name + '</a></dt><dd>(.*?)</dd>').findall(desc)
-            if len(match1) > 0:
-                p_plot = match1[0].replace('&nbsp;','')
-            else:
-                p_plot = ''
-            li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-            li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year})
-            u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
-            t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-    t.setContent(int(argv[1]), 'episodes')
+	t = util.Menu()
+	link = GetHttpData(url)
+	match1 = re.compile('年份：<ahref=".*?">([0-9]*)').findall(link)
+	if len(match1) == 0:
+		match1 = re.compile('出品年份：([0-9]*)').findall(link)
+	if len(match1) == 0:
+		p_year = 0
+	else:
+		p_year = int(match1[0])
+	match1 = re.compile('导演：<ahref=".*?">(.*?)</a>').findall(link)
+	if len(match1) == 0:
+		p_director = ''
+	else:
+		p_director = match1[0]
+	p_cast = re.compile('class="f14">(.*?)</a>饰演<spanclass="f14">(.*?)</span>').findall(link)
+	#    match1 = re.compile('<divid="j-album-[^>]*>(.*?)</div>').findall(link)
+	match1 = re.compile('<divid="j-album-[0-9]+[^>]*>(.*?)</div>').findall(link)
+	album = ''
+	for url1 in match1:
+		album = album + GetHttpData('http://www.qiyi.com' + url1)
+	match2 = re.compile('<divid="j-desc-[0-9]+[^>]*>(.*?)</div>').findall(link)
+	desc = ''
+	for url1 in match2:
+		desc = desc + GetHttpData('http://www.qiyi.com' + url1)
+	#    match = re.compile('<li><ahref="(.+?)"class="imgBg1"><.+?src="(.+?)"title="(.+?)".*?"').findall(album)
+	match = re.compile('<li><ahref="(.+?)"class="a_bar"><.+?data-lazy="(.+?)"title="(.+?)"').findall(album)
+	totalItems = len(match)
+	if totalItems==0:
+		match1 = re.compile('"tvPictureUrl":"(.+?)","producers').findall(link)
+		p_thumb=match1[0]
+		match = re.compile('<ahref="(.+?)">(.+?)</a>').findall(album)
+		totalItems = len(match) 
+		for p_url,p_name in match:
+			match1 = re.compile('<ahref="' + p_url + '">' + p_name + '</a></span><pstyle=.*?>(.*?)</p>').findall(desc)
+			if len(match1) > 0:
+				p_plot = match1[0].replace('&nbsp;','')
+			else:
+				p_plot = ''
+			p_name =  name + '(' + p_name + ')'
+			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+			li.bindMedia(util.Media())
+			li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year})
+			u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
+			t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
+	else:
+		for p_url, p_thumb, p_name in match:
+	#            match1 = re.compile('<ahref="' + p_url + '">' + p_name + '</a></span><pstyle=.*?>(.*?)</p>').findall(desc)
+			match1 = re.compile('<ahref="' + p_url + '">' + p_name + '</a></dt><dd>(.*?)</dd>').findall(desc)
+			if len(match1) > 0:
+				p_plot = match1[0].replace('&nbsp;','')
+			else:
+				p_plot = ''
+			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+			li.bindMedia(util.Media())
+			li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year})
+			u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
+			t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
+	t.setContent(int(argv[1]), 'episodes')
 
-    # Test
-    decode(t.endOfDirectory(int(argv[1])))
-    # end
-    return t
+	# Test
+	decode(t.endOfDirectory(int(argv[1])))
+	# end
+	return t
 
 def PlayVideo(url,name,thumb):
     media = util.Media()
@@ -512,5 +521,7 @@ def decode(code):
 	elif mode == 6:
 		return fakeProgList(name, url, thumb)
 
+# Test
 if __name__ == '__main__':
 	decode(__addonid__)
+# end
