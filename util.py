@@ -331,9 +331,14 @@ class Menu(object):
 
 	def addDirectoryItem(self, handle, url, listitem, isFolder=True, totalItems=0):
 		"""
-		Fix me 向XBMC兼容性
 		x.addDirectoryItem(...) -> None
+
+		将MenuItem对象增加到Menu容器中，并关联与此MenuItem对应的code
+	
+		由于一开始考虑插件转换的速度，采用了和XBMC方法名和参数名一致
+		的形式，后续修改
 		"""
+		""" Fix me 向XBMC兼容性 """
 		self.items.append(listitem)	
 		self.params.append(url)
 
