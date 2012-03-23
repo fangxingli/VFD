@@ -11,6 +11,7 @@ util 是一个介于H3显示模块和数据处理模块中间的框架模块，
 import io, re, os
 import urllib2
 from xml.dom import minidom
+
 class Media(object):
 	"""
 	视频类，处理于视频信息相关信息，包括导演，演员，视频播放地址等
@@ -66,8 +67,10 @@ class Media(object):
 		"""
 		x.getURLs() -> list
 
-		返回播放地址数组
+		返回播放地址数组, 如果数组长度为0则抛出AttributeError 异常
 		"""
+		if len(self.URLs) == 0:
+			raise AttributeError('Media get fail')
 		return self.URLs
 
 	# For Test
@@ -117,11 +120,11 @@ class MenuItem(object):
 		"""
 		x.__getattr__('getActors') <==> x.getActors() <==> x.media.getActors()
 		
-		raise Exception if self.media is None
+		raise AttributeError if self.media is None
 		"""
 		if self.media is not None:
 			return getattr(self.media, func)
-		raise Exception, 'self.media is None'
+		raise AttributeError('self.media is None')
 	
 	def setInfo(self, type, infoLabels):
 		""" Uesless """
@@ -174,6 +177,8 @@ class Categorization(object):
 		前面的tuple中的元素0是用来显示在屏幕的，后面接的'cat'为一个key，之后的dict每一项
 		的key为'类型'下面的子选项，当选中'动作'后，将'_action'作为value,与之前的'cat'组成
 		dict中的一项{'cat':'_action'}
+
+	尚未使用
 	"""
 	def __init__(self):
 		object.__init__(self)
@@ -234,9 +239,22 @@ class Categorization(object):
 
 	''' Set init code for categorising '''
 	def setCateCode(self, **args):
+		"""
+		x.setCateCode(**args) -> None
+
+		以可变长度形参模式保存筛选模式原形
+		比如:x.setCateCode(cat='_movie', year='_1999', area='_USA',...)
+		数据处理方调用此方法
+		"""
 		self.cate_code = args
             
 	def updateCateCode(self, update_code):
+		"""
+		x.updateCateCode(dict对象) -> new_CateCode
+		
+		在筛选过后用x.updateCateCode 更新此筛选模式
+		界面显示方调用此方法
+		"""
 		self.cate_code.update(update_cate)
 		return self.cate_code
 
@@ -345,6 +363,14 @@ class Menu(object):
 
 	''' Invoke by clutter  '''
 	def selectItem(self, name='', index = -1):
+		"""
+		x.selectItem(name, index) -> code
+
+		参数name为MenuItem对象的getName()
+		参数index为MenuItem对象在此Menu容器中的顺序索引值
+		二者选其一作为参数
+		返回数据处理方定义的code，并交给其decode函数解析
+		"""
 		if index in range(len(self.params)):
 			return self.params[index]
 		''' Loop the page items '''
@@ -389,14 +415,26 @@ class Menu(object):
 		pass	
 
 class Addon(object):
+	"""
+	为兼容XBMC的Addon类，用来将参数保存在本地XML文件
+	并提供读写能力
+
+	默认的配置文件路径为 'plugin.video.%s/resources/settings.xml' % (__addon__)
+	"""
 	def __init__(self, id):
 		self.__id = id
 		self.cfg_path = os.path.join(os.getcwd() + '/' + self.__id + '/resources/settings.xml')
 
 	def getAddonInfo(self, id):
+		""" Useless """
 		return self.__id	
 
 	def getSetting(self,id):
+		"""
+		x.getSetting(id) -> string
+
+		返回文件中setting节点下，id属性值为参数id的default属性值
+		"""
 		f = open(self.cfg_path, 'r')
 		dom = minidom.parse(self.cfg_path)
 		root = dom.documentElement
@@ -406,6 +444,11 @@ class Addon(object):
 		f.close()
 
 	def setSetting(self, id, value):
+		"""
+		x.setSetting(id) -> None
+
+		设置文件中setting节点下，id属性值为参数id的default属性值
+		"""
 		f = open(self.cfg_path, 'r')
 		dom = minidom.parse(f)
 		root = dom.documentElement
@@ -417,6 +460,9 @@ class Addon(object):
 
 # For Test
 class Player(object):
+	"""
+	为兼容XBMC的Player类，用来播放网络视频地址，实际实际未使用
+	"""
 	''' The play URL is here, which can be played in mplayer'''
 	__current_play_url=''
 	def __init__(self):
@@ -433,6 +479,9 @@ class Player(object):
 
 
 class PlayList(object):
+	"""
+	为兼容XBMC的PlayList类，存放和处理网络视频播放地址	
+	"""
 	def __init__(self, playlist):
 		self.urls=[]
 		self.listitems=[]
@@ -441,6 +490,11 @@ class PlayList(object):
 		return self.urls	
 	
 	def getURLs(self):
+		"""
+		x.getURLs() -> list
+
+		以list对象形式返回网络播放地址
+		"""
 		return self.urls
 
 	def clear(self):
@@ -451,6 +505,9 @@ class PlayList(object):
 		self.listitems.append(listitem)
 	
 class Dialog(object):
+	"""
+	兼容XBMC的Dialog类,实际实际未使用
+	"""
 	dialog_list=[]
 	heading=''
 	def __init__(self):
@@ -474,9 +531,13 @@ class Dialog(object):
 			return getin
 		
 def translatePath(path):
+	""" Useless """
 	pass	
 
 def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3', gdb=False):
+	"""
+	抓取网络数据，并处理后返回，由于各个插件网络数据处理各不同，实际只有Tencent视频和youku视频使用此函数
+	"""
 	print '------------------------------> ' + url 
 	
 	def simple_gdb(s,gdb_file = "/hdisk/modules/qqtv_dbg_log.txt" ):
