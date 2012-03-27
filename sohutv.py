@@ -14,6 +14,7 @@ import util
 # Modified by fxfboy@gmail.com
 
 # Plugin constants 
+# v0 No Categorization
 __addonname__ = "搜狐视频(SoHu)"
 __addonid__ = "plugin.video.sohuvideo"
 __addon__ = util.Addon(id=__addonid__)
@@ -35,7 +36,7 @@ def GetHttpData(url):
 	try:
 		req = urllib2.Request(url)
 		req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-		response = urllib2.urlopen(req, timeout=3)
+		response = urllib2.urlopen(req, timeout=10)
 		httpdata = response.read()
 		if response.headers.get('content-encoding', None) == 'gzip':
 			httpdata = gzip.GzipFile(fileobj=StringIO.StringIO(httpdata)).read()
@@ -50,6 +51,7 @@ def GetHttpData(url):
 				httpdata = httpdata.decode(charset, 'ignore').encode('utf8', 'ignore')
 	except Exception,e :
 		print e
+		return None
 	return httpdata
    
 def searchDict(dlist,idx):
@@ -71,7 +73,7 @@ def getRootMenu():
 		t.addDirectoryItem(int(argv[1]),u,li,True)
 
 	# Test
-	#decode(t.endOfDirectory(int(argv[1])))
+	decode(t.endOfDirectory(int(argv[1])))
 	# end
 
 	return t
@@ -281,7 +283,7 @@ def progList(name,id,page,cat,area,year,p5,p6,p11,order):
 		t.setContent(int(argv[1]), 'movies')
 
 	#Test
-	#decode(t.endOfDirectory(int(argv[1])))
+	decode(t.endOfDirectory(int(argv[1])))
 	#end
 	return t
 
@@ -372,103 +374,119 @@ def seriesList(name,id,url,thumb):
 	t.setContent(int(argv[1]), 'episodes')
 
 	#Test
-	#decode(t.endOfDirectory(int(argv[1])))
+	decode(t.endOfDirectory(int(argv[1])))
 	#end
 	return t
 
 def PlayVideo(name,url,thumb):
-    print 'PlayVideo -> '+url
-    level = int(__addon__.getSetting('resolution'))
-    site = int(__addon__.getSetting('videosite'))
-    link = GetHttpData(url)
-    match1 = re.compile('var vid="(.+?)";').search(link)
-    if not match1:
-        match1 = re.compile('<a href="(http://[^/]+/[0-9]+/[^\.]+.shtml)" target="?_blank"?><img').search(link)
-        if match1:
-            PlayVideo(name,match1.group(1),thumb)
-        return
-    p_vid = match1.group(1)
-    if p_vid.find(',') > 0 : p_vid = p_vid.split(',')[0]
-    link = GetHttpData('http://hot.vrs.sohu.com/vrs_flash.action?vid='+p_vid)
-    match = re.compile('"norVid":(.+?),"highVid":(.+?),"superVid":(.+?),').search(link)
-    if not match:
-       dialog = util.Dialog()
-       ok = dialog.ok(__addonname__,'您当前选择的节目暂不能播放，请选择其它节目')   
-       return    
-    ratelist=[]
-    if match.group(3)!='0':ratelist.append(['超清','3'])
-    if match.group(2)!='0':ratelist.append(['高清','2'])
-    if match.group(1)!='0':ratelist.append(['流畅','1'])
-    if level == 3 :
-        dialog = util.Dialog()
-        list = [x[0] for x in ratelist]
-        if len(ratelist)==1:
-            rate=ratelist[0][1]
-        else:
-            sel = dialog.select('视频率 (请选择低视频-流畅如网络缓慢)', list)
-            if sel == -1:
-                return
-            else:
-                rate=ratelist[sel][1]
-    else:
-        rate = int(ratelist[0][1])
-        if rate > level + 1:
-            rate = level + 1
-    if match.group(int(rate))<>str(p_vid):
-        link = GetHttpData('http://hot.vrs.sohu.com/vrs_flash.action?vid='+match.group(int(rate)))
-    match = re.compile('"tvName":"(.+?)"').findall(link)
-    if not match:
-       res = ratelist[3-int(rate)][0]
-       dialog = util.Dialog()
-       ok = dialog.ok(__addonname__,'您当前选择的视频: ['+ res +'] 暂不能播放，请选择其它视频')       
-       return
-    name = match[0]
-    match = re.compile('"clipsURL"\:\["(.+?)"\]').findall(link)
-    paths = match[0].split('","')
-    match = re.compile('"su"\:\["(.+?)"\]').findall(link)
-    if not match:
-       res = ratelist[3-int(rate)][0]
-       dialog = util.Dialog()
-       ok = dialog.ok(__addonname__,'您当前选择的视频: ['+ res +'] 暂不能播放，请选择其它视频')       
-       return
-    newpaths = match[0].split('","')
-    playlist = util.PlayList(1)
-    playlist.clear()
-    for i in range(0,len(paths)):
-        p_url = 'http://data.vod.itc.cn/?prot=2&file='+paths[i].replace('http://data.vod.itc.cn','')+'&new='+newpaths[i]
-        link = GetHttpData(p_url)
-        key=link.split('|')[3]
-        url=link.split('|')[0].rstrip("/")+newpaths[i]+'?key='+key
-        title = name+" 第"+str(i+1)+"/"+str(len(paths))+"节"
-        listitem=util.MenuItem(title,thumbnailImage=thumb)
-        listitem.setInfo(type="Video",infoLabels={"Title":title})
-        if site == 0:
-            parsedurl = urlparse.urlparse(url)
-            httpConn = httplib.HTTPConnection(parsedurl[1])
-            httpConn.request('GET', parsedurl[2])
-        else:
-            httpConn = httplib.HTTPConnection("new.sohuv.dnion.com")
-            httpConn.request('GET', newpaths[i]+'?key='+key)
-        response = httpConn.getresponse()
-        url=response.getheader('Location')
-        httpConn.close()
-        playlist.add(url, listitem)
-    # start play only after all video queue is completed. otherwise has problem on slow network
-    util.Player().play(playlist)
+	print 'PlayVideo -> '+url
+	level = int(__addon__.getSetting('resolution'))
+	site = int(__addon__.getSetting('videosite'))
+	link = GetHttpData(url)
+	match1 = re.compile('var vid="(.+?)";').search(link)
+	if not match1:
+		match1 = re.compile('<a href="(http://[^/]+/[0-9]+/[^\.]+.shtml)" target="?_blank"?><img').search(link)
+		if match1:
+			PlayVideo(name,match1.group(1),thumb)
+		return
+	p_vid = match1.group(1)
+	if p_vid.find(',') > 0 : p_vid = p_vid.split(',')[0]
+	link = GetHttpData('http://hot.vrs.sohu.com/vrs_flash.action?vid='+p_vid)
+	match = re.compile('"norVid":(.+?),"highVid":(.+?),"superVid":(.+?),').search(link)
+	if not match:
+	   dialog = util.Dialog()
+	   ok = dialog.ok(__addonname__,'您当前选择的节目暂不能播放，请选择其它节目')   
+	   return    
+	ratelist=[]
+	if match.group(3)!='0':ratelist.append(['超清','3'])
+	if match.group(2)!='0':ratelist.append(['高清','2'])
+	if match.group(1)!='0':ratelist.append(['流畅','1'])
+	if level == 3 :
+		dialog = util.Dialog()
+		list = [x[0] for x in ratelist]
+		if len(ratelist)==1:
+			rate=ratelist[0][1]
+		else:
+			# Test
+			sel = dialog.select('视频率 (请选择低视频-流畅如网络缓慢)', list)
+			#sel = 0
+			# end
+			if sel == -1:
+				return
+			else:
+				rate=ratelist[sel][1]
+	else:
+		rate = int(ratelist[0][1])
+		if rate > level + 1:
+			rate = level + 1
+	if match.group(int(rate))<>str(p_vid):
+		link = GetHttpData('http://hot.vrs.sohu.com/vrs_flash.action?vid='+match.group(int(rate)))
+	match = re.compile('"tvName":"(.+?)"').findall(link)
+	if not match:
+	   res = ratelist[3-int(rate)][0]
+	   dialog = util.Dialog()
+	   ok = dialog.ok(__addonname__,'您当前选择的视频: ['+ res +'] 暂不能播放，请选择其它视频')       
+	   return
+	name = match[0]
+	match = re.compile('"clipsURL"\:\["(.+?)"\]').findall(link)
+	paths = match[0].split('","')
+	match = re.compile('"su"\:\["(.+?)"\]').findall(link)
+	if not match:
+	   res = ratelist[3-int(rate)][0]
+	   dialog = util.Dialog()
+	   ok = dialog.ok(__addonname__,'您当前选择的视频: ['+ res +'] 暂不能播放，请选择其它视频')       
+	   return
+	newpaths = match[0].split('","')
+	playlist = util.PlayList(1)
+	playlist.clear()
+	for i in range(0,len(paths)):
+		p_url = 'http://data.vod.itc.cn/?prot=2&file='+paths[i].replace('http://data.vod.itc.cn','')+'&new='+newpaths[i]
+		link = GetHttpData(p_url)
+		key=link.split('|')[3]
+		url=link.split('|')[0].rstrip("/")+newpaths[i]+'?key='+key
+		title = name+" 第"+str(i+1)+"/"+str(len(paths))+"节"
+		listitem=util.MenuItem(title,thumbnailImage=thumb)
+		listitem.setInfo(type="Video",infoLabels={"Title":title})
+		if site == 0:
+			parsedurl = urlparse.urlparse(url)
+			httpConn = httplib.HTTPConnection(parsedurl[1])
+			httpConn.request('GET', parsedurl[2])
+		else:
+			httpConn = httplib.HTTPConnection("new.sohuv.dnion.com")
+			httpConn.request('GET', newpaths[i]+'?key='+key)
+		response = httpConn.getresponse()
+		url=response.getheader('Location')
+		httpConn.close()
+		playlist.add(url, listitem)
+		print 'playlist ----------> ' + str(url)
+	media = util.Media()
+	# start play only after all video queue is completed. otherwise has problem on slow network
+	media.setPlayList(playlist)
+	# Test
+	util.Player().play(playlist)
+	# end
+
+	return media
 
 
 def PlayBoKe(name,url,thumb):
-    print 'PlayBoKe2 -> ' + url
-    link = GetHttpData("http://www.flvcd.com/parse.php?kw="+urllib.quote_plus(url))
-    match = re.compile('"(http://.+?video.sohu.com/.+?)" target="_blank"').findall(link)
-    if len(match)>0:
-        playlist=util.PlayList(1)
-        playlist.clear()
-        for i in range(0,len(match)):
-            listitem = util.MenuItem(name, thumbnailImage = thumb)
-            listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
-            playlist.add(match[i], listitem)
-        util.Player().play(playlist)
+	print 'PlayBoKe2 -> ' + url
+	media = util.Media()
+	link = GetHttpData("http://www.flvcd.com/parse.php?kw="+urllib.quote_plus(url))
+	match = re.compile('"(http://.+?video.sohu.com/.+?)" target="_blank"').findall(link)
+	if len(match)>0:
+		playlist=util.PlayList(1)
+		playlist.clear()
+		for i in range(0,len(match)):
+			listitem = util.MenuItem(name, thumbnailImage = thumb)
+			listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
+			playlist.add(match[i], listitem)
+		# Test
+		util.Player().play(playlist)
+		# end
+		media.setPlayList(playlist)
+	
+	return media
 
 def performChanges(name,id,listpage,cat,area,year,order,p5,p6,p11):
     change = False
@@ -597,17 +615,23 @@ def LiveChannel(name):
 	t.setContent(int(argv[1]), 'movies')
 
 	# Test
-	#decode(t.endOfDirectory(int(argv[1])))
+	decode(t.endOfDirectory(int(argv[1])))
 	# end
 	
 	return t
 
 def LivePlay(name,id,thumb):
-    link = GetHttpData(LIVEID_URL % (id))
-    parsed_json = json.loads(link)
-    url = 'http://' + parsed_json['data']['clipsURL'][0].encode('utf-8')
-    li = util.MenuItem(name,iconImage='',thumbnailImage=thumb)
-    util.Player().play(url, li)
+	media = util.Media()
+	link = GetHttpData(LIVEID_URL % (id))
+	parsed_json = json.loads(link)
+	url = 'http://' + parsed_json['data']['clipsURL'][0].encode('utf-8')
+	li = util.MenuItem(name,iconImage='',thumbnailImage=thumb)
+	# Test
+	util.Player().play(url, li)
+	# end
+	media.URLs.append(url)
+	
+	return media
 
 def get_params(code):
 	parts = code.split('?')
@@ -724,6 +748,6 @@ def decode(code):
 		return LivePlay(name,id,thumb)
 
 # Test
-#if __name__ == '__main__':
-#	decode(__addonid__)
+if __name__ == '__main__':
+	decode(__addonid__)
 # end

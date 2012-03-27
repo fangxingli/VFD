@@ -66,120 +66,122 @@ def getRootMenu():
         li = util.MenuItem(name)
         t.addDirectoryItem(int(argv[1]),u,li,True,totalItems)
 	# Test
-    decode(t.endOfDirectory(int(argv[1])))
-	#end
+    #decode(t.endOfDirectory(int(argv[1])))
+	# end
     return t
 
 def progList(name,id,page,cat,area,year,order):
-    t = util.Menu()
-    if cat == '不限':
-        catstr = ''
-    else:
-        catstr = cat
-    if area == '不限':
-        areastr = ''
-    else:
-        areastr = area
-    if year == '不限':
-        yearstr = ''
-    elif year.find('年代')>0:
-        yearstr = '19' + year[0:2]
-    else:
-        yearstr = year
-    url = 'http://www.youku.com/v_olist/'+id+'_a_'+areastr+'_s__g_'+catstr+'_r_'+yearstr+'_o_'+order
-    if page:
-        url = url + '_p_' + page
-        currpage = int(page)
-    else:
-        currpage = 1
-    url += '.html'
-    link = GetHttpData(url)
-    if link == None:
-        return None
-    match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
-    if len(match):
-        match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
-        totalpages = int(match1[len(match1)-1][0])
-    else:
-        totalpages = 1
-    match = re.compile('<div class="filter" id="filter">(.+?)<!--filter end-->', re.DOTALL).findall(link)
-    if len(match):
-        listpage = match[0]
-    else:
-        listpage = ''
-    match = re.compile('<ul class="p">(.+?)</ul>', re.DOTALL).findall(link)
-    totalItems = len(match) + 1
-    if currpage > 1: totalItems = totalItems + 1
-    if currpage < totalpages: totalItems = totalItems + 1
-    if cat == '不限':
-        catstr = '全部类型'
-    else:
-        catstr = cat
-    if area == '不限':
-        areastr = '全部地区'
-    else:
-        areastr = area
-    if year == '不限':
-        yearstr = '全部年份'
-    else:
-        yearstr = year
-    # Test
-    #li = util.MenuItem(name+'（第'+str(currpage)+'/'+str(totalpages)+'页）【[COLOR FFFF0000]' + catstr + '[/COLOR]/[COLOR FF00FF00]' + areastr + '[/COLOR]/[COLOR FFFFFF00]' + yearstr + '[/COLOR]/[COLOR FF00FFFF]' + searchDict(ORDER_LIST,order) + '[/COLOR]】（按此选择）')
-    #u = encode(mode=4, name=name, id=id, cat=cat, area=area, year=year, order=order, page=listpage)
-    try:
-        cate = getCategorization(listpage)
-        cate.setCateCode(mode=4, name=name, id=id, cat=cat, area=area, year=year, order=order, page=listpage)
-        t.enableCategorization(cate)
-    except Exception, e:
-        t.enableCategorization(None)
-    # end
-    for i in range(0,len(match)):
-        match1 = re.compile('/id_(.+?).html"').search(match[i])   
-        p_id = match1.group(1)
-        match1 = re.compile('<li class="p_thumb"><img src="(.+?)"').search(match[i])
-        p_thumb = match1.group(1)
-        match1 = re.compile('<li class="p_title"><a [^>]+>(.+?)</a>').search(match[i])
-        p_name = match1.group(1)
-        match1 = re.compile('<li class="p_status"><span class="status">(.+?)</span>').search(match[i])
-        if match1:
-            p_name1 = p_name + '（' + match1.group(1) + '）'
-        else:
-            p_name1 = p_name
-        if match[i].find('<span class="ico__SD"')>0:
-            p_name1 += '[超清]'
-            p_res = 2
-        elif match[i].find('<span class="ico__HD"')>0:
-            p_name1 += '[高清]'
-            p_res = 1
-        else:
-            p_res = 0
-        if match[i].find('<li class="p_ischarge">')>0:
-            p_name1 += '[付费节目]'
-        print id
-        if id in ('c_96','c_95'):
-            mode = 2
-            isdir = False
-        else:
-            mode = 3
-            isdir = True
-        li = util.MenuItem(p_name1, iconImage = '', thumbnailImage = p_thumb)
-        #li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Genre":p_genre, "Plot":p_plot, "Year":p_year, "Cast":p_cast, "Tagline":p_tagline})
-        u = encode(mode=str(mode), name=p_name, id=p_id, thumb=(p_thumb), res=p_res)
-        t.addDirectoryItem(int(argv[1]), u, li, isdir, totalItems)
-
-    if currpage > 1:
-        li = util.MenuItem('上一页')
-        u = encode(mode=1, name=name, id=id,cat=cat, area=area, year=year,order=order,page=str(currpage-1))
-        t.addPageItem(u, li)
-    if currpage < totalpages:
-        li = util.MenuItem('下一页')
-        u = encode(mode=1, name=name, id=id,cat=cat, area=area, year=year,order=order,page=str(currpage+1))
-        t.addPageItem(u, li)
-    t.setContent(int(argv[1]), 'movies')
+	t = util.Menu()
+	if cat == '不限':
+		catstr = ''
+	else:
+		catstr = cat
+	if area == '不限':
+		areastr = ''
+	else:
+		areastr = area
+	if year == '不限':
+		yearstr = ''
+	elif year.find('年代')>0:
+		yearstr = '19' + year[0:2]
+	else:
+		yearstr = year
+	url = 'http://www.youku.com/v_olist/'+id+'_a_'+areastr+'_s__g_'+catstr+'_r_'+yearstr+'_o_'+order
+	if page:
+		url = url + '_p_' + page
+		currpage = int(page)
+	else:
+		currpage = 1
+	url += '.html'
+	link = GetHttpData(url)
+	if link == None:
+		return None
+	match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
+	if len(match):
+		match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
+		totalpages = int(match1[len(match1)-1][0])
+	else:
+		totalpages = 1
+	match = re.compile('<div class="filter" id="filter">(.+?)<!--filter end-->', re.DOTALL).findall(link)
+	if len(match):
+		listpage = match[0]
+	else:
+		listpage = ''
+	match = re.compile('<ul class="p">(.+?)</ul>', re.DOTALL).findall(link)
+	totalItems = len(match) + 1
+	if currpage > 1: totalItems = totalItems + 1
+	if currpage < totalpages: totalItems = totalItems + 1
+	if cat == '不限':
+		catstr = '全部类型'
+	else:
+		catstr = cat
+	if area == '不限':
+		areastr = '全部地区'
+	else:
+		areastr = area
+	if year == '不限':
+		yearstr = '全部年份'
+	else:
+		yearstr = year
 	# Test
-    decode(t.endOfDirectory(int(argv[1])))
-	#end
-    return t
+	#li = util.MenuItem(name+'（第'+str(currpage)+'/'+str(totalpages)+'页）【[COLOR FFFF0000]' + catstr + '[/COLOR]/[COLOR FF00FF00]' + areastr + '[/COLOR]/[COLOR FFFFFF00]' + yearstr + '[/COLOR]/[COLOR FF00FFFF]' + searchDict(ORDER_LIST,order) + '[/COLOR]】（按此选择）')
+	#u = encode(mode=4, name=name, id=id, cat=cat, area=area, year=year, order=order, page=listpage)
+	try:
+		cate = getCategorization(listpage)
+		cate.setCateCode(mode=4, name=name, id=id, cat=cat, area=area, year=year, order=order, page=listpage)
+		t.enableCategorization(cate)
+	except Exception, e:
+		t.enableCategorization(None)
+	# end
+	for i in range(0,len(match)):
+		match1 = re.compile('/id_(.+?).html"').search(match[i])   
+		p_id = match1.group(1)
+		match1 = re.compile('<li class="p_thumb"><img src="(.+?)"').search(match[i])
+		p_thumb = match1.group(1)
+		match1 = re.compile('<li class="p_title"><a [^>]+>(.+?)</a>').search(match[i])
+		p_name = match1.group(1)
+		match1 = re.compile('<li class="p_status"><span class="status">(.+?)</span>').search(match[i])
+		if match1:
+			p_name1 = p_name + '（' + match1.group(1) + '）'
+		else:
+			p_name1 = p_name
+		if match[i].find('<span class="ico__SD"')>0:
+			p_name1 += '[超清]'
+			p_res = 2
+		elif match[i].find('<span class="ico__HD"')>0:
+			p_name1 += '[高清]'
+			p_res = 1
+		else:
+			p_res = 0
+		if match[i].find('<li class="p_ischarge">')>0:
+			p_name1 += '[付费节目]'
+			# skim non-free
+			continue
+		print id
+		if id in ('c_96','c_95'):
+			mode = 2
+			isdir = False
+		else:
+			mode = 3
+			isdir = True
+		li = util.MenuItem(p_name1, iconImage = '', thumbnailImage = p_thumb)
+		#li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Genre":p_genre, "Plot":p_plot, "Year":p_year, "Cast":p_cast, "Tagline":p_tagline})
+		u = encode(mode=str(mode), name=p_name, id=p_id, thumb=(p_thumb), res=p_res)
+		t.addDirectoryItem(int(argv[1]), u, li, isdir, totalItems)
+
+	if currpage > 1:
+		li = util.MenuItem('上一页')
+		u = encode(mode=1, name=name, id=id,cat=cat, area=area, year=year,order=order,page=str(currpage-1))
+		t.addPageItem(u, li)
+	if currpage < totalpages:
+		li = util.MenuItem('下一页')
+		u = encode(mode=1, name=name, id=id,cat=cat, area=area, year=year,order=order,page=str(currpage+1))
+		t.addPageItem(u, li)
+	t.setContent(int(argv[1]), 'movies')
+	# Test
+	#decode(t.endOfDirectory(int(argv[1])))
+	# end
+	return t
 
 def showMediaInfo(data, item=None):
 	if item == None:
@@ -220,7 +222,7 @@ def fakeProgList(name, url, thumb, res):
 	t.addDirectoryItem(int(argv[1]), u, li)
 	# Test
 	#print li.printMediaInfo()
-	decode(t.endOfDirectory(int(argv[1])))
+	#decode(t.endOfDirectory(int(argv[1])))
 	# end
 	return t
 
@@ -303,7 +305,7 @@ def seriesList(name,id,thumb,page):
     t.setContent(int(argv[1]), 'movies')
 	# Test
     #t[1].printMediaInfo()
-    decode(t.endOfDirectory(int(argv[1])))
+    #decode(t.endOfDirectory(int(argv[1])))
 	# end
     return t
 
@@ -377,35 +379,39 @@ def progList2(name,id,page,cat,year,order):
         t.addPageItem(u, li)
     t.setContent(int(argv[1]), 'movies')
 	# Test
-    decode(t.endOfDirectory(int(argv[1])))
+    #decode(t.endOfDirectory(int(argv[1])))
 	# end
     return t
 
 def PlayVideo(name,url,thumb,res):
-    res_limit = int(__addon__.getSetting('movie_res'))
-    if res > res_limit:
-        res = res_limit
-    link = GetHttpData("http://www.flvcd.com/parse.php?kw="+url+"&format="+RES_LIST[res])
-    if link == None:
-        return None
-    match = re.compile('"(http://f.youku.com/player/getFlvPath/.+?)" target="_blank"').findall(link)
-    if len(match)>0:
-        playlist=util.PlayList(1)
-        playlist.clear()
-        for i in range(0,len(match)):
-            listitem = util.MenuItem(name, thumbnailImage = __addonicon__)
-            listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
-            playlist.add(match[i], listitem)
-        util.Player().play(playlist)
-    else:
-        if link.find('该视频为加密视频')>0:
-            dialog = util.Dialog()
-            ok = dialog.ok(__addonname__, '无法播放：该视频为加密视频')
-        elif link.find('解析失败，请确认视频是否被删除')>0:
-            dialog = util.Dialog()
-            ok = dialog.ok(__addonname__, '无法播放：该视频或为收费节目')
-    
-    return Media_obj
+	media = util.Media()
+	res_limit = int(__addon__.getSetting('movie_res'))
+	if res > res_limit:
+		res = res_limit
+	link = GetHttpData("http://www.flvcd.com/parse.php?kw="+url+"&format="+RES_LIST[res])
+	if link == None:
+		return None
+	match = re.compile('"(http://f.youku.com/player/getFlvPath/.+?)" target="_blank"').findall(link)
+	if len(match)>0:
+		playlist=util.PlayList(1)
+		playlist.clear()
+		for i in range(0,len(match)):
+			listitem = util.MenuItem(name, thumbnailImage = __addonicon__)
+			listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
+			playlist.add(match[i], listitem)
+		# Test
+		#util.Player().play(playlist)
+		# end
+		media.setPlayList(playlist)
+	else:
+		if link.find('该视频为加密视频')>0:
+			dialog = util.Dialog()
+			ok = dialog.ok(__addonname__, '无法播放：该视频为加密视频')
+		elif link.find('解析失败，请确认视频是否被删除')>0:
+			dialog = util.Dialog()
+			ok = dialog.ok(__addonname__, '无法播放：该视频或为收费节目')
+
+	return media
 
 def getCategorization(listpage):
 	cate = util.Categorization()
@@ -589,6 +595,6 @@ def decode(code):
 	elif mode == 99:
 		return fakeProgList(mode, name, url, thumb, res)
 # Test
-if __name__ == '__main__':
-	decode('__addonid__')
+#if __name__ == '__main__':
+#	decode('__addonid__')
 # end
