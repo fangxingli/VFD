@@ -13,6 +13,7 @@ class MediaPluginController(object):
 	def __init__(self):
 		self.plugins = ['pptv', 'youkutv', 'sohutv', 'qqtv']
 		self.plugin_state = None
+		self.include = None
 	
 	def update(self, observed):
 		"""
@@ -24,25 +25,31 @@ class MediaPluginController(object):
 		msg = cPickle.loads(observed.data)
 		if msg['command'] == 'setPlugin':
 			try:
-				observed.include = __import__(msg['params'], fromlist=["*"])
+				self.include = __import__(msg['params'], fromlist=["*"])
 			except Exception, e:
 				print e
 				raise e
 		elif msg['command'] == 'SelectItem':
 			try:
 				# FIXME: exception process
-				self.plugin_state = observed.include.decode( self.plugin_state.selectItem(msg['params']) )
+				self.plugin_state = self.include.decode( self.plugin_state.selectItem(msg['params']) )
 			except Exception, e:
-				pass
-			observed.tnMessmageSend( 'testdbus', 0, cPickle.dumps(self.plugin_state) )
+				print e
+				raise e
+			observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(self.plugin_state) )
 		elif msg['command'] == 'getRootMenu':
 			try:
 				print 'getRootMenu'
-				self.plugin_state = observed.include.getRootMenu()
+				self.plugin_state = self.include.getRootMenu()
 			except Exception, e:
-				pass	
+				print e
+				raise e
 			print 'Begin send'
-			observed.tnMessmageSend( 'testdbus', 0, cPickle.dumps(self.plugin_state) )
+			try:
+				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(self.plugin_state) )
+			except Exception, e:
+				print e
+				raise e
 			print 'after send'
 		elif msg['command'] == 'delPlugin':
 			del msg['params']
@@ -53,7 +60,7 @@ class MediaPluginDBus(dbus.service.Object):
 	"""
 	
 	def __init__(self, bus_name, session):
-		dbus.service.Object.__init__(self, object_path='/com/routon', bus_name=bus_name)
+		dbus.service.Object.__init__(self, bus_name, '/com/routon')
 		self.bus_name = bus_name
 		self.session = session
 		self.my_module_name = 'MediaPlugin'
@@ -61,18 +68,19 @@ class MediaPluginDBus(dbus.service.Object):
 		self.data = None
 		self.code = None
 		self.observer = None
+		self.my_proxy = {}
 
 	def get_proxy(self, module):
 		module_name = "com.routon."+module
 		if module_name in self.my_proxy:
 			return self.my_proxy[module_name]
-		path = self.my_bus.get_object(module_name, '/com/routon', follow_name_owner_changes=True)
+		path = self.session.get_object(module_name, '/com/routon', follow_name_owner_changes=True)
 		interface = dbus.Interface(path, dbus_interface='com.routon')
 		self.my_proxy[module_name] = interface
 		return interface
 
 	@dbus.service.method(dbus_interface='com.routon', in_signature='suay', out_signature='i', byte_arrays=True, utf8_strings=True)
-	def tnMessage(self, module, code, data):
+	def TnMessage(self, module, code, data):
 		"""
 		回调方法, 默认的方法名
 		"""
@@ -83,7 +91,7 @@ class MediaPluginDBus(dbus.service.Object):
 		print '消息接收完毕，通知controller 开始处理数据'
 		self.notify()
 
-	def notify(self,):
+	def notify(self):
 		self.observer.update(self)
 
 	def attach(self,observer):
