@@ -2,6 +2,7 @@
 import urllib2, urllib, re, string, sys, os, gzip, StringIO
 import util
 from util import GetHttpData
+from util import MediaInvalid
 
 # 优酷视频(YouKu) by taxigps, 2011
 
@@ -405,11 +406,9 @@ def PlayVideo(name,url,thumb,res):
 		media.setPlayList(playlist)
 	else:
 		if link.find('该视频为加密视频')>0:
-			dialog = util.Dialog()
-			ok = dialog.ok(__addonname__, '无法播放：该视频为加密视频')
+			raise MediaInvalid, '无法播放：该视频为加密视频'
 		elif link.find('解析失败，请确认视频是否被删除')>0:
-			dialog = util.Dialog()
-			ok = dialog.ok(__addonname__, '无法播放：该视频或为收费节目')
+			raise MediaInvalid, '无法播放：该视频或为收费节目'
 
 	return media
 

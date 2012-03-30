@@ -2,6 +2,7 @@
 import urllib2, urllib, re, string, os, gzip, StringIO
 import util
 from util import GetHttpData
+from util import MediaInvalid
 
 ############################################################
 # 腾讯视频(v.qq.com) by wow1122(wht9000@gmail.com), 2011
@@ -260,16 +261,14 @@ def PlayVideo(name,type,url,thumb):
                 match =re.compile('<msg>(.+?)</msg>').findall(link)
                 if match==None: match[0]=""
                 msg = '节目暂时不提供观看: ' + match[0]
-                dialog = util.Dialog()
-                ok = dialog.ok(__addonname__, msg)
+                raise MediaInvalid, msg	
         media.setPlayList(playlist)
         # Test
         #media.printMediaInfo()
         #util.Player().play(playlist)
         # end
     else:
-        dialog = util.Dialog()
-        ok = dialog.ok(__addonname__, '无法播放：未匹配到视频文件，请稍侯再试.')
+        raise MediaInvalid, '无法播放：未匹配到视频文件，请稍侯再试.'
 
     return media
 
@@ -289,8 +288,7 @@ def PlayMv(name,url,thumb):
         #util.Player().play(match[0])
         # end
     else:
-        dialog = util.Dialog()
-        ok = dialog.ok(__addonname__, '无法播放：未匹配到视频文件，请稍侯再试.')
+        raise MediaInvalid, '无法播放：未匹配到视频文件，请稍侯再试.'
     mv.setPlayList(playlist)
     li.bindMedia(mv)
 

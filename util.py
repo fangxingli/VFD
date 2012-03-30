@@ -12,6 +12,12 @@ import io, re, os
 import urllib2
 from xml.dom import minidom
 
+class MPException(Exception):
+	pass
+
+class MediaInvalid(MPException):
+	pass
+
 class Media(object):
 	"""
 	视频类，处理于视频信息相关信息，包括导演，演员，视频播放地址等
@@ -90,6 +96,8 @@ class Media(object):
 		"""
 		x.__getattr__('Actors') <==> x.getActors() 
 		"""
+		if func.startswith('__') and func.endswith('__'):
+			return super(Media, self).__getattr__(func)
 		if func[3:] not in self.infos or func.find('get') != 0:
 			raise NotImplementedError, '%s not implements' % (func)
 		else:
@@ -122,9 +130,12 @@ class MenuItem(object):
 		
 		raise AttributeError if self.media is None
 		"""
+		if func.startswith('__') and func.endswith('__'):
+			return super(MenuItem, self).__getattr__(func)
 		if self.media is not None:
 			return getattr(self.media, func)
-		raise AttributeError('self.media is None')
+		else:
+			raise AttributeError('self.media is None')
 	
 	def setInfo(self, type, infoLabels):
 		""" Uesless """
