@@ -32,6 +32,9 @@ argv[0] = __addonid__
 argv[1] = 0 
 argv[2] =''
 
+def encode(**args):
+    return argv[0] + "?" + '&'.join([ "%s=%s"%(x,urllib.quote_plus(str(args[x]))) for x in args ])
+
 def GetHttpData(url):
 	print '-----------------------------------> ' + str(url)
 	try:
@@ -50,9 +53,9 @@ def GetHttpData(url):
 			charset = charset.lower()
 			if (charset != 'utf-8') and (charset != 'utf8'):
 				httpdata = httpdata.decode(charset, 'ignore').encode('utf8', 'ignore')
-	except MediaInvalid,e :
+	except urllib2.URLError, e:
 		print e
-		return None
+		raise NetworkError, 'network error'
 	return httpdata
    
 def searchDict(dlist,idx):
@@ -255,7 +258,7 @@ def progList(name,id,page,cat,area,year,p5,p6,p11,order):
 				mode = 2
 			else:
 				p_dir = False
-				mode = 3
+				mode = 12
 			if id=='9001':mode=5
 			if match[i].find('<span class="cq_ico">')>0:
 				p_name1 = p_name + '[超清]'
@@ -378,8 +381,19 @@ def seriesList(name,id,url,thumb):
 	#end
 	return t
 
+def fakeIntro(name,url,thumb):
+	t = util.Menu()
+	listitem=util.MenuItem(name, thumbnailImage=thumb)
+	u = encode(mode=3, name=name, url=url, thumb=thumb)
+	listitem.bindMedia(util.Media())
+	# if have introduction, show here
+	t.addDirectoryItem(0, u, listitem)
+	return t
+	
+
 def PlayVideo(name,url,thumb):
 	print 'PlayVideo -> '+url
+	media = util.Media()
 	level = int(__addon__.getSetting('resolution'))
 	site = int(__addon__.getSetting('videosite'))
 	link = GetHttpData(url)
@@ -443,6 +457,7 @@ def PlayVideo(name,url,thumb):
 		url=link.split('|')[0].rstrip("/")+newpaths[i]+'?key='+key
 		title = name+" 第"+str(i+1)+"/"+str(len(paths))+"节"
 		listitem=util.MenuItem(title,thumbnailImage=thumb)
+		media.setMediaInfo('Title', title)
 		listitem.setInfo(type="Video",infoLabels={"Title":title})
 		if site == 0:
 			parsedurl = urlparse.urlparse(url)
@@ -456,7 +471,6 @@ def PlayVideo(name,url,thumb):
 		httpConn.close()
 		playlist.add(url, listitem)
 		print 'playlist ----------> ' + str(url)
-	media = util.Media()
 	# start play only after all video queue is completed. otherwise has problem on slow network
 	media.setPlayList(playlist)
 	# Test
@@ -476,6 +490,7 @@ def PlayBoKe(name,url,thumb):
 		playlist.clear()
 		for i in range(0,len(match)):
 			listitem = util.MenuItem(name, thumbnailImage = thumb)
+			media.setMediaInfo('Title', name)
 			listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
 			playlist.add(match[i], listitem)
 		# Test
@@ -623,6 +638,7 @@ def LivePlay(name,id,thumb):
 	parsed_json = json.loads(link)
 	url = 'http://' + parsed_json['data']['clipsURL'][0].encode('utf-8')
 	li = util.MenuItem(name,iconImage='',thumbnailImage=thumb)
+	media.setMediaInfo('Title', name)
 	# Test
 	#util.Player().play(url, li)
 	# end
@@ -743,6 +759,8 @@ def decode(code):
 		return LiveChannel(name)
 	elif mode == 11:
 		return LivePlay(name,id,thumb)
+	elif mode == 12:
+		return fakeIntro(name,id,thumb)
 
 # Test
 #if __name__ == '__main__':

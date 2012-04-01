@@ -44,12 +44,13 @@ def GetHttpData(url):
 		print "GetHttpData %s " % url 
 		req = urllib2.Request(url)
 		req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-		response = urllib2.urlopen(req, timeout=3)
+		response = urllib2.urlopen(req, timeout=10)
 		httpdata = response.read()
 		response.close()
 		httpdata = re.sub("\s", "", httpdata)
 		return httpdata
 	except urllib2.URLError, e:
+		raise NetworkError, 'network error'
 		return None
 
 def encode(**args):
@@ -93,7 +94,7 @@ def getRootMenu():
 		t.addDirectoryItem(int(argv[1]),u,li,True)
 
 	# Test
-	decode(t.endOfDirectory(int(argv[1])))
+	#decode(t.endOfDirectory(int(argv[1])))
 	# end
 	return t
 
@@ -172,60 +173,6 @@ def progList():
 		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
 		u = encode(mode=6, name=p_name, url=p_url, thumb=p_thumb)
 		t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-		'''
-		link = GetHttpData(p_url)
-		v_url = getPlayURL(link)
-		if v_url != '':
-			# 能够获取播放页面，为单个视频
-			match1 = re.compile('上映年份：<ahref=".*?">([0-9]*)').findall(link)
-			if len(match1) == 0:
-				match1 = re.compile('出品年份：<!--.*?-->([0-9]*)').findall(link)
-			if len(match1) == 0:
-				p_year = 0
-			else:
-				p_year = int(match1[0])
-			match1 = re.compile('导演：<ahref=".*?">(.*?)</a>').findall(link)
-			if len(match1) == 0:
-				p_director = ''
-			else:
-				p_director = match1[0]
-			p_cast = re.compile('class="f14">(.*?)</a>饰演<spanclass="f14">(.*?)</span>').findall(link)
-			match1 = re.compile('<pid="desc1".*?>(.*?)</p>').findall(link)
-			if len(match1) == 0:
-				p_plot = ''
-			else:
-				p_plot = match1[0]
-			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-			#u = argv[0] + "?mode=2&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(v_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
-			u = encode(mode=2, name=p_name, url=v_url, thumb=p_thumb)
-			li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year, "Rating":p_rating, "Votes":p_votes})
-			t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-		else:
-			# 无法获取播放页面，为剧集
-			match1 = re.compile('年份：<ahref=".*?">([0-9]*)').findall(link)
-			if len(match1) == 0:
-				match1 = re.compile('出品年份：([0-9]*)').findall(link)
-			if len(match1) == 0:
-				p_year = 0
-			else:
-				p_year = int(match1[0])
-			match1 = re.compile('导演：<ahref=".*?">(.*?)</a>').findall(link)
-			if len(match1) == 0:
-				p_director = ''
-			else:
-				p_director = match1[0]
-			p_cast = re.compile('class="f14">(.*?)</a>饰演<spanclass="f14">(.*?)</span>').findall(link)
-			match1 = re.compile('<pclass="zhuanjiP2">(.*?)</p>').findall(link)
-			if len(match1) == 0:
-				p_plot = ''
-			else:
-				p_plot = match1[0]
-			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-			#u = argv[0] + "?mode=3&name=" + urllib.quote_plus(p_name) + "&url=" + urllib.quote_plus(p_url)+ "&thumb=" + urllib.quote_plus(p_thumb)
-			u = encode(mode=3, name=p_name, url=p_url, thumb=p_thumb)
-			li.setInfo(type = "Video", infoLabels = {"Title":p_name, "Director":p_director, "Cast":p_cast, "Plot":p_plot, "Year":p_year, "Rating":p_rating, "Votes":p_votes})
-			t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
-			'''
 
 	if currpage > 1:
 		#li = util.MenuItem('上一页（第'+page+'页/共'+str(totalpages)+'页）')
@@ -241,7 +188,7 @@ def progList():
 	t.setContent(int(argv[1]), 'movies')
 
 	# Test
-	decode(t.endOfDirectory(int(argv[1])))
+	#decode(t.endOfDirectory(int(argv[1])))
 	# end
 	return t
 
@@ -275,7 +222,7 @@ def fakeProgList(p_name, url, p_thumb):
 		t.addDirectoryItem(int(argv[1]), u, li, False)
 
 		# Test
-		decode(t.endOfDirectory(int(argv[1])))
+		#decode(t.endOfDirectory(int(argv[1])))
 		# end
 		return t
 	else:
@@ -367,36 +314,37 @@ def seriesList(url, name, thumb):
 	t.setContent(int(argv[1]), 'episodes')
 
 	# Test
-	decode(t.endOfDirectory(int(argv[1])))
+	#decode(t.endOfDirectory(int(argv[1])))
 	# end
 	return t
 
 def PlayVideo(url,name,thumb):
-    media = util.Media()
-    if url.find('http://cache.video.qiyi.com/v/') == -1:
-        link = GetHttpData(url)
-        url = getPlayURL(link)
-    link = GetHttpData(url)
-    match=re.compile('<file>http://data.video.qiyi.com/videos/([^/]+?)/(.+?)</file>').findall(link)
-    playlist=util.PlayList(1)
-    playlist.clear()
-    listitem = util.MenuItem(name, thumbnailImage = thumb)
-    #listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(1)+"/"+str(len(match))+" 节"})
-    if urlExists('http://qiyi.soooner.com/videos2/'+match[0][0]+'/'+match[0][1]):
-        baseurl = 'http://qiyi.soooner.com/videos2/'
-    else:
-        baseurl = 'http://qiyi.soooner.com/videos/'
-    playlist.add(baseurl+match[0][0]+'/'+match[0][1], listitem = listitem)
-    for i in range(1,len(match)):
-        listitem=util.MenuItem(name, thumbnailImage = thumb)
-        #listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
-        playlist.add(baseurl+match[i][0]+'/'+match[i][1], listitem = listitem)
-    media.setPlayList(playlist)
-    # Test
-    util.Player().play(playlist)
-    # end
+	media = util.Media()
+	if url.find('http://cache.video.qiyi.com/v/') == -1:
+		link = GetHttpData(url)
+		url = getPlayURL(link)
+	link = GetHttpData(url)
+	match=re.compile('<file>http://data.video.qiyi.com/videos/([^/]+?)/(.+?)</file>').findall(link)
+	playlist=util.PlayList(1)
+	playlist.clear()
+	listitem = util.MenuItem(name, thumbnailImage = thumb)
+	media.setMediaInfo('Title', name)
+	#listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(1)+"/"+str(len(match))+" 节"})
+	if urlExists('http://qiyi.soooner.com/videos2/'+match[0][0]+'/'+match[0][1]):
+		baseurl = 'http://qiyi.soooner.com/videos2/'
+	else:
+		baseurl = 'http://qiyi.soooner.com/videos/'
+	playlist.add(baseurl+match[0][0]+'/'+match[0][1], listitem = listitem)
+	for i in range(1,len(match)):
+		listitem=util.MenuItem(name, thumbnailImage = thumb)
+		#listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
+		playlist.add(baseurl+match[i][0]+'/'+match[i][1], listitem = listitem)
+	media.setPlayList(playlist)
+	# Test
+	#util.Player().play(playlist)
+	# end
 
-    return media
+	return media
 
 def performChannel(channel):
 	'''
@@ -522,6 +470,6 @@ def decode(code):
 		return fakeProgList(name, url, thumb)
 
 # Test
-if __name__ == '__main__':
-	decode(__addonid__)
+#if __name__ == '__main__':
+#	decode(__addonid__)
 # end

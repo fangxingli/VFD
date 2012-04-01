@@ -85,8 +85,6 @@ def progList(name,type,page,cat,area,year,order):
 	url = baseurl + 'mi_mtype='+type+'&mi_type='+cat+ '&mi_area=' +area+ '&mi_year=' + year + '&mi_sort=1&mi_show_type=0&mi_pagenum=' +str(currpage) +'&mi_pagesize=30&otype=xml&mi_online=1&mi_index_type=0'
 	if type=='4': url+='&mi_platform=1' 
 	link = GetHttpData(url)
-	if link == None:
-		return None
 	match = re.compile('<total>(.+?)</total>', re.DOTALL).findall(link)
 	alltotalItems=match[0]
 	if int(alltotalItems)%30 > 0:
@@ -177,122 +175,119 @@ def progList(name,type,page,cat,area,year,order):
 	return t
 
 def listA(name,url,thumb):
-    t = util.Menu()
-    print name
-    print url
-    link = GetHttpData(url)
-    if link == None:
-        return None
-    #media = util.Media()
-    #电视剧
-    # get TV Media Info
-    media = showMediaInfo(link)
-    if link.find('sv=""') > 0 :
-        match = re.compile('</i><a target="_self".+?id="(.+?)"  title="(.+?)"', re.DOTALL).findall(link)
-        totalItems=len(match)
-        for p_url,p_name  in match:
-            li = util.MenuItem(p_name, iconImage = '', thumbnailImage = thumb)
-            li.bindMedia(media)
-            u = argv[0] + "?mode=10&name="+urllib.quote_plus(p_name)+"&type=3&url="+urllib.quote_plus(p_url)+"&thumb="+urllib.quote_plus(thumb)
-            t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-    else:
-        match = re.compile('</i><a target="_self".+?title="(.+?)".+?sv="(.+?)"', re.DOTALL).findall(link)
-        totalItems=len(match)
-        for p_name,p_url  in match:
-            li = util.MenuItem(p_name, iconImage = '', thumbnailImage = thumb)
-            li.bindMedia(media)
-            u = argv[0] + "?mode=10&name="+urllib.quote_plus(p_name)+"&type=3&url="+urllib.quote_plus(p_url)+"&thumb="+urllib.quote_plus(thumb)
-            t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-    t.setContent(int(argv[1]), 'movies')
+	t = util.Menu()
+	print name
+	print url
+	link = GetHttpData(url)
+	#media = util.Media()
+	#电视剧
+	# get TV Media Info
+	media = showMediaInfo(link)
+	if link.find('sv=""') > 0 :
+		match = re.compile('</i><a target="_self".+?id="(.+?)"  title="(.+?)"', re.DOTALL).findall(link)
+		totalItems=len(match)
+		for p_url,p_name  in match:
+			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = thumb)
+			media.setMediaInfo('Title', p_name)
+			li.bindMedia(media)
+			u = argv[0] + "?mode=10&name="+urllib.quote_plus(p_name)+"&type=3&url="+urllib.quote_plus(p_url)+"&thumb="+urllib.quote_plus(thumb)
+			t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
+	else:
+		match = re.compile('</i><a target="_self".+?title="(.+?)".+?sv="(.+?)"', re.DOTALL).findall(link)
+		totalItems=len(match)
+		for p_name,p_url  in match:
+			li = util.MenuItem(p_name, iconImage = '', thumbnailImage = thumb)
+			media.setMediaInfo('Title', p_name)
+			li.bindMedia(media)
+			u = argv[0] + "?mode=10&name="+urllib.quote_plus(p_name)+"&type=3&url="+urllib.quote_plus(p_url)+"&thumb="+urllib.quote_plus(thumb)
+			t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
+	t.setContent(int(argv[1]), 'movies')
 	# For Test
-    #media.printMediaInfo()
-    #decode(t.endOfDirectory(int(argv[1])))
+	#media.printMediaInfo()
+	#decode(t.endOfDirectory(int(argv[1])))
 	#end
-    return t
+	return t
     
 def PlayVideo(name,type,url,thumb):
-    # get Movie Media Info
-    media = util.Media()
-    print name
-    print '------------------------------------------------>' + url
-    if type=='2':
-        # 电影
-        t = util.Menu()
-        link = GetHttpData(url)
-        if link == None:
-            return None
+	# get Movie Media Info
+	media = util.Media()
+	print name
+	print '------------------------------------------------>' + url
+	if type=='2':
+		# 电影
+		t = util.Menu()
+		link = GetHttpData(url)
 
-        match = re.compile('vid:"(.+?)"').findall(link)   
-        vid=match[0]
+		match = re.compile('vid:"(.+?)"').findall(link)   
+		vid=match[0]
 
-        showMediaInfo(link, media)
-        # Test
-        #media.printMediaInfo()
-        # end
-        li = util.MenuItem(name, iconImage = '', thumbnailImage = thumb)
-        li.bindMedia(media)
-        u = argv[0] + "?mode=10&name="+urllib.quote_plus(name)+"&type=3&url="+vid+"&thumb="+urllib.quote_plus(thumb)
-        t.addDirectoryItem(int(argv[1]), u, li, False)
+		showMediaInfo(link, media)
+		# Test
+		#media.printMediaInfo()
+		# end
+		li = util.MenuItem(name, iconImage = '', thumbnailImage = thumb)
+		media.setMediaInfo('Title', name)
+		li.bindMedia(media)
+		u = argv[0] + "?mode=10&name="+urllib.quote_plus(name)+"&type=3&url="+vid+"&thumb="+urllib.quote_plus(thumb)
+		t.addDirectoryItem(int(argv[1]), u, li, False)
 
 		# Test
-        #decode(t.endOfDirectory(1))
-        return t
+		#decode(t.endOfDirectory(1))
+		return t
 
-    elif type=='3':
-        # 电视剧
-        vidlist=url.split('|')
-       
-    print vidlist
-    if len(vidlist)>0:
-        playlist=util.PlayList(1)
-        playlist.clear()
-        for i in range(len(vidlist)):
-            listitem = util.MenuItem(name, thumbnailImage = thumb)
-            listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(vidlist))+" 节"})
-            print vidlist[i]
-            p_url = 'http://vv.video.qq.com/geturl?otype=xml&platform=1&format=2&&vid='+vidlist[i]
-            link = GetHttpData(p_url)
-            if link == None:
-                return None
-            match = re.compile('<url>(.+?)</url>').findall(link)
-            if match:
-                playlist.add(match[0], listitem)
-            else:
-                match =re.compile('<msg>(.+?)</msg>').findall(link)
-                if match==None: match[0]=""
-                msg = '节目暂时不提供观看: ' + match[0]
-                raise MediaInvalid, msg	
-        media.setPlayList(playlist)
-        # Test
-        #media.printMediaInfo()
-        #util.Player().play(playlist)
-        # end
-    else:
-        raise MediaInvalid, '无法播放：未匹配到视频文件，请稍侯再试.'
+	elif type=='3':
+		# 电视剧
+		vidlist=url.split('|')
+	   
+	print vidlist
+	if len(vidlist)>0:
+		playlist=util.PlayList(1)
+		playlist.clear()
+		for i in range(len(vidlist)):
+			listitem = util.MenuItem(name, thumbnailImage = thumb)
+			listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(vidlist))+" 节"})
+			media.setMediaInfo('Title', name)
+			print vidlist[i]
+			p_url = 'http://vv.video.qq.com/geturl?otype=xml&platform=1&format=2&&vid='+vidlist[i]
+			link = GetHttpData(p_url)
+			match = re.compile('<url>(.+?)</url>').findall(link)
+			if match:
+				playlist.add(match[0], listitem)
+			else:
+				match =re.compile('<msg>(.+?)</msg>').findall(link)
+				if match==None: match[0]=""
+				msg = '节目暂时不提供观看: ' + match[0]
+				raise MediaInvalid, msg	
+		media.setPlayList(playlist)
+		# Test
+		#media.printMediaInfo()
+		#util.Player().play(playlist)
+		# end
+	else:
+		raise MediaInvalid, '无法播放：未匹配到视频文件，请稍侯再试.'
 
-    return media
+	return media
 
 def PlayMv(name,url,thumb):
-    print name
-    print url
-    mv = util.Media()
-    li = util.MenuItem(name, thumbnailImage = thumb)
-    playlist = util.PlayList(1)
-    link = GetHttpData('http://vv.video.qq.com/geturl?otype=xml&platform=1&format=2&&vid='+url)
-    if link == None:
-        return None
-    match = re.compile('<url>(.+?)</url>').findall(link)
-    if match:
-        playlist.add(match[0])
-        # Test
-        #util.Player().play(match[0])
-        # end
-    else:
-        raise MediaInvalid, '无法播放：未匹配到视频文件，请稍侯再试.'
-    mv.setPlayList(playlist)
-    li.bindMedia(mv)
+	print name
+	print url
+	mv = util.Media()
+	li = util.MenuItem(name, thumbnailImage = thumb)
+	mv.setMediaInfo('Title', name)
+	playlist = util.PlayList(1)
+	link = GetHttpData('http://vv.video.qq.com/geturl?otype=xml&platform=1&format=2&&vid='+url)
+	match = re.compile('<url>(.+?)</url>').findall(link)
+	if match:
+		playlist.add(match[0])
+		# Test
+		#util.Player().play(match[0])
+		# end
+	else:
+		raise MediaInvalid, '无法播放：未匹配到视频文件，请稍侯再试.'
+	mv.setPlayList(playlist)
+	li.bindMedia(mv)
 
-    return li
+	return li
 
 def showMediaInfo(data, item=None):
 	if item == None:

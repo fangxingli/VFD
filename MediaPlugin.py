@@ -17,7 +17,7 @@ class MediaPluginController(object):
 	返回的对象以消息体模式发送到界面进程
 	"""
 	def __init__(self):
-		self.plugins_allowed = ['pptv', 'youkutv', 'sohutv', 'qqtv']
+		self.plugins_allowed = ['pptv', 'youkutv', 'sohutv', 'qqtv', 'qiyitv']
 		self.plugin_state = None
 		self.include = None
 	
@@ -39,17 +39,20 @@ class MediaPluginController(object):
 					raise KeyError, '%s plugin invalid yet' % msg_recv['params']
 				self.include = __import__(msg_recv['params'], fromlist=["*"])
 			except Exception, e:
-				print e
+				print '[-] 异常发生' + str(e)
 		elif msg_recv['command'] == 'SelectItem':
 			try:
 				# FIXME: exception process
-				self.plugin_state = self.include.decode( self.plugin_state.selectItem(msg_recv['params']) )
+				code = msg_recv['pluginObject'].selectItem(msg_recv['params'])
+				self.plugin_state = self.include.decode(code)
 				print '>>>>>>>开始发消息 SelectItem'
 				msg_send = { 'pluginObject':self.plugin_state, 'type':msg_recv['type'] }		
 				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 				print '<<<<<<<结束发消息 SelectItem'
-			except Exception, e:
-				print e
+			except util.MPException, e:
+				print '[-] 异常发生' + str(e)
+				msg_send = { 'pluginObject':e, 'type':msg_recv['type'] }		
+				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 		elif msg_recv['command'] == 'getRootMenu':
 			print 'Begin getRootMenu'
 			try:
@@ -58,8 +61,10 @@ class MediaPluginController(object):
 				msg_send = { 'pluginObject':self.plugin_state, 'type':msg_recv['type'] }		
 				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 				print '>>>>>>>结束发消息 getRootMenu'
-			except Exception, e:
-				print e
+			except util.MPException, e:
+				print '[-] 异常发生' + str(e)
+				msg_send = { 'pluginObject':e, 'type':msg_recv['type'] }		
+				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 			print 'After getRootMenu'
 		elif msg_recv['command'] == 'stop':
 			exit(0)

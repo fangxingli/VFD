@@ -54,8 +54,6 @@ def getList2(listpage, cat):
 def getRootMenu():
     t = util.Menu()
     link = GetHttpData('http://www.youku.com/v/')
-    if link == None:
-        return None
     match0 = re.compile('<div class="left">(.+?)<!--left end-->', re.DOTALL).search(link)
     match = re.compile('<li><a href="/([^/]+)/([^\.]+)\.html"[^>]+>(.+?)</a></li>').findall(match0.group(1))
     totalItems = len(match)
@@ -95,8 +93,6 @@ def progList(name,id,page,cat,area,year,order):
 		currpage = 1
 	url += '.html'
 	link = GetHttpData(url)
-	if link == None:
-		return None
 	match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
 	if len(match):
 		match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
@@ -213,11 +209,9 @@ def showMediaInfo(data, item=None):
 ''' 这是为了在选择列表里的某一视频后在增加一级信息展示而包装了一级ProgList, 由getMovie 调用 '''
 def fakeProgList(name, url, thumb, res):
 	t = util.Menu()
-	li = util.MenuItem(name)
+	li = util.MenuItem(name, thumbnailImage=thumb)
 	# mode:10 is PlayVideo
 	link = GetHttpData(url)
-	if link == None:
-		return None
 	li.bindMedia( showMediaInfo(link) )
 	u = encode(mode=10, name=name, url=url, thumb=thumb, res=str(res))
 	t.addDirectoryItem(int(argv[1]), u, li)
@@ -230,8 +224,6 @@ def fakeProgList(name, url, thumb, res):
 def getMovie(name,id,thumb,res):
     if len(id)==21:
         link = GetHttpData('http://www.youku.com/show_page/id_' + id + '.html')
-        if link == None:
-            return None
 		
         match = re.compile('<div class="showbanner">.+?href="(http://v.youku.com/v_show/id_.+?.html)"', re.DOTALL).search(link)
         if match:
@@ -242,73 +234,70 @@ def getMovie(name,id,thumb,res):
         #PlayVideo(name, 'http://v.youku.com/v_show/id_'+id+'.html', thumb, res)
 
 def seriesList(name,id,thumb,page):
-    t = util.Menu()
-    url = "http://www.youku.com/show_eplist/showid_"+id+"_type_pic_from_ajax_page_"+page+".html"
-    print url
-    currpage = int(page)
-    link = GetHttpData(url)
-    if link == None:
-        return None
-    match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
-    if len(match):
-        match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
-        totalpages = int(match1[len(match1)-1][0])
-    else:
-        totalpages = 1
-    match = re.compile('<ul class="v">(.+?)</ul>', re.DOTALL).findall(link)
-    totalItems = len(match) + 1
-    if currpage > 1: totalItems = totalItems + 1
-    if currpage < totalpages: totalItems = totalItems + 1
+	t = util.Menu()
+	url = "http://www.youku.com/show_eplist/showid_"+id+"_type_pic_from_ajax_page_"+page+".html"
+	print url
+	currpage = int(page)
+	link = GetHttpData(url)
+	match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
+	if len(match):
+		match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
+		totalpages = int(match1[len(match1)-1][0])
+	else:
+		totalpages = 1
+	match = re.compile('<ul class="v">(.+?)</ul>', re.DOTALL).findall(link)
+	totalItems = len(match) + 1
+	if currpage > 1: totalItems = totalItems + 1
+	if currpage < totalpages: totalItems = totalItems + 1
 
-    # Test
-    #li = util.MenuItem("当前节目："+name+'（第'+str(currpage)+'/'+str(totalpages)+'页）')
-    #u=argv[0]+"?mode=40&name="+urllib.quote_plus(name)
-    #t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
-    # end
-    media = None
-    for i in range(0,len(match)):
-        match1 = re.compile('<li class="v_link"><a .*?href="(http://v.youku.com/v_show/id_.+?.html)"').search(match[i])
-        if match1:
-            p_url = match1.group(1)
-            ''' Media Infomation get in here , and make sure run here once'''
-            if media is None:
-                link = GetHttpData(p_url)
-                if link == None:
-                    return None
-                media = showMediaInfo(link, media)
-        else:
-            continue
-        match1 = re.compile('<li class="v_thumb"><img src="(.+?)"').search(match[i])
-        p_thumb = match1.group(1)
-        match1 = re.compile('<li class="v_title">[\s]*<a [^>]+>(.+?)</a>').search(match[i])
-        p_name = match1.group(1)
-        if match[i].find('<span class="ico__SD"')>0:
-            p_name += '[超清]'
-            p_res = 2
-        elif match[i].find('<span class="ico__HD"')>0:
-            p_name += '[高清]'
-            p_res = 1
-        else:
-            p_res = 0
-        li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
-        li.bindMedia(media)
-        u = encode(mode=10, name=p_name, url=p_url, thum=p_thumb, res=str(p_res))
-        t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
-
-    if currpage > 1:
-        li = util.MenuItem('上一页')
-        u = encode(mode=3, name=name, id=id, thumb=thumb, page=str(currpage-1))
-        t.addPageItem(u, li)
-    if currpage < totalpages:
-        li = util.MenuItem('下一页')
-        u = encode(mode=3, name=name, id=id, thumb=thumb, page=str(currpage+1))
-        t.addPageItem(u, li)
-    t.setContent(int(argv[1]), 'movies')
 	# Test
-    #t[1].printMediaInfo()
-    #decode(t.endOfDirectory(int(argv[1])))
+	#li = util.MenuItem("当前节目："+name+'（第'+str(currpage)+'/'+str(totalpages)+'页）')
+	#u=argv[0]+"?mode=40&name="+urllib.quote_plus(name)
+	#t.addDirectoryItem(int(argv[1]), u, li, True, totalItems)
 	# end
-    return t
+	media = None
+	for i in range(0,len(match)):
+		match1 = re.compile('<li class="v_link"><a .*?href="(http://v.youku.com/v_show/id_.+?.html)"').search(match[i])
+		if match1:
+			p_url = match1.group(1)
+			''' Media Infomation get in here , and make sure run here once'''
+			if media is None:
+				link = GetHttpData(p_url)
+				media = showMediaInfo(link, media)
+		else:
+			continue
+		match1 = re.compile('<li class="v_thumb"><img src="(.+?)"').search(match[i])
+		p_thumb = match1.group(1)
+		match1 = re.compile('<li class="v_title">[\s]*<a [^>]+>(.+?)</a>').search(match[i])
+		p_name = match1.group(1)
+		if match[i].find('<span class="ico__SD"')>0:
+			p_name += '[超清]'
+			p_res = 2
+		elif match[i].find('<span class="ico__HD"')>0:
+			p_name += '[高清]'
+			p_res = 1
+		else:
+			p_res = 0
+		li = util.MenuItem(p_name, iconImage = '', thumbnailImage = p_thumb)
+		media.setMediaInfo('Title',p_name)
+		li.bindMedia(media)
+		u = encode(mode=10, name=p_name, url=p_url, thum=p_thumb, res=str(p_res))
+		t.addDirectoryItem(int(argv[1]), u, li, False, totalItems)
+
+	if currpage > 1:
+		li = util.MenuItem('上一页')
+		u = encode(mode=3, name=name, id=id, thumb=thumb, page=str(currpage-1))
+		t.addPageItem(u, li)
+	if currpage < totalpages:
+		li = util.MenuItem('下一页')
+		u = encode(mode=3, name=name, id=id, thumb=thumb, page=str(currpage+1))
+		t.addPageItem(u, li)
+	t.setContent(int(argv[1]), 'movies')
+	# Test
+	#t[1].printMediaInfo()
+	#decode(t.endOfDirectory(int(argv[1])))
+	# end
+	return t
 
 def progList2(name,id,page,cat,year,order):
     t = util.Menu()
@@ -321,8 +310,6 @@ def progList2(name,id,page,cat,year,order):
         currpage = 1
     url += '.html'
     link = GetHttpData(url)
-    if link == None:
-        return None	
     match = re.compile('<ul class="pages">(.+?)</ul>', re.DOTALL).findall(link)
     if len(match):
         match1 = re.compile('<li.+?>([0-9]+)(</a>|</span>)</li>', re.DOTALL).findall(match[0])
@@ -390,14 +377,13 @@ def PlayVideo(name,url,thumb,res):
 	if res > res_limit:
 		res = res_limit
 	link = GetHttpData("http://www.flvcd.com/parse.php?kw="+url+"&format="+RES_LIST[res])
-	if link == None:
-		return None
 	match = re.compile('"(http://f.youku.com/player/getFlvPath/.+?)" target="_blank"').findall(link)
 	if len(match)>0:
 		playlist=util.PlayList(1)
 		playlist.clear()
 		for i in range(0,len(match)):
 			listitem = util.MenuItem(name, thumbnailImage = __addonicon__)
+			media.setMediaInfo('Title',name)
 			listitem.setInfo(type="Video",infoLabels={"Title":name+" 第"+str(i+1)+"/"+str(len(match))+" 节"})
 			playlist.add(match[i], listitem)
 		# Test

@@ -13,9 +13,21 @@ import urllib2
 from xml.dom import minidom
 
 class MPException(Exception):
+	"""
+	MediaPlugin 异常基类
+	"""
 	pass
 
 class MediaInvalid(MPException):
+	"""
+	视频获取异常
+	"""
+	pass
+
+class NetworkError(MPException):
+	"""
+	网络异常	
+	"""
 	pass
 
 class Media(object):
@@ -32,7 +44,7 @@ class Media(object):
 	"""
 	def __init__(self, label='', label2='', iconImage='', thumbnailImage='', path=''):
 		#object.__init__(self)
-		self.infos={'Score':'', 'Director':'', 'Actors':'', 'Area':'', 'Type':'', 'Year':'', 'Duration':'', 'Introduction':''}
+		self.infos={'Title':'','Score':'', 'Director':'', 'Actors':'', 'Area':'', 'Type':'', 'Year':'', 'Duration':'', 'Introduction':''}
 		self.playlist = None
 		self.URLs = []
 
@@ -586,10 +598,11 @@ def GetHttpData(url, UserAgent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB
 	req.add_header('User-Agent', UserAgent)
 	simple_gdb("add_header")
 	try:
-		simple_gdb("try: urllib2.urlopen(req, timeout=3)")
-		response = urllib2.urlopen(req, timeout=3)
+		simple_gdb("try: urllib2.urlopen(req, timeout=10)")
+		response = urllib2.urlopen(req, timeout=10)
 	except urllib2.URLError, e:
 		simple_gdb(str(e))
+		raise NetworkError, 'network error'
 		return None	
 	simple_gdb("urlopen complete")
 	httpdata = response.read()
