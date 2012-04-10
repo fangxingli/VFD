@@ -42,7 +42,6 @@ class MediaPluginController(object):
 				print '[-] 异常发生' + str(e)
 		elif msg_recv['command'] == 'SelectItem':
 			try:
-				# FIXME: exception process
 				code = msg_recv['pluginObject'].selectItem(msg_recv['params'])
 				self.plugin_state = self.include.decode(code)
 				print '>>>>>>>开始发消息 SelectItem'
@@ -50,8 +49,12 @@ class MediaPluginController(object):
 				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 				print '<<<<<<<结束发消息 SelectItem'
 			except util.MPException, e:
-				print '[-] 异常发生' + str(e)
+				print '[-] MPException异常发生' + str(e)
 				msg_send = { 'pluginObject':e, 'type':msg_recv['type'] }		
+				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
+			except Exception, e:
+				print '[-] Exception异常发生' + str(e)
+				msg_send = { 'pluginObject':MPException('Exception' + str(e)), 'type':msg_recv['type'] }		
 				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 		elif msg_recv['command'] == 'getRootMenu':
 			print 'Begin getRootMenu'
@@ -64,6 +67,10 @@ class MediaPluginController(object):
 			except util.MPException, e:
 				print '[-] 异常发生' + str(e)
 				msg_send = { 'pluginObject':e, 'type':msg_recv['type'] }		
+				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
+			except Exception, e:
+				print '[-] Exception异常发生' + str(e)
+				msg_send = { 'pluginObject':MPException('Exception' + str(e)), 'type':msg_recv['type'] }		
 				observed.tnMessmageSend( observed.from_module_name, 0, cPickle.dumps(msg_send) )
 			print 'After getRootMenu'
 		elif msg_recv['command'] == 'stop':

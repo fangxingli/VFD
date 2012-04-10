@@ -470,7 +470,7 @@ class Addon(object):
 	"""
 	def __init__(self, id):
 		self.__id = id
-		self.cfg_path = os.path.join(os.getcwd() + '/' + self.__id + '/resources/settings.xml')
+		self.cfg_path = os.path.join(os.path.dirname(os.path.realpath(__file__)) + '/' + self.__id + '/resources/settings.xml')
 
 	def getAddonInfo(self, id):
 		""" Useless """
